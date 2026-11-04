@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('apix_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = savedTheme || (prefersDark ? 'dark' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ARIMA Machine Learning & Airfare Price Forecasting Engine for NSO (MoSPI) & RBI Retail Inflation Platform." />
+  <title>Forecast - APIx Airfare Price Index</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="alternate icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/forecasting.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="forecasting-page" data-theme="dark">
+  <!-- Top Navigation Header -->
+  <header class="site-header apix-nav-header">
+    <div class="header-inner nav-inner-custom">
+      <div class="nav-left-group">
+        <a class="brand apix-brand" href="index.html" aria-label="APIx Home">
+          <span class="apix-logo-icon" aria-hidden="true">&#9992;</span>
+          <div class="apix-brand-col">
+            <span class="apix-logo-text">APIx</span>
+            <span class="apix-platform-tag">Airfare Price Intelligence Platform</span>
+          </div>
+        </a>
+
+        <nav class="main-nav apix-main-nav" id="mainNav" aria-label="Primary">
+          <a href="index.html">Overview</a>
+          <a href="routes.html">Routes</a>
+          <a href="analysis.html">Analytics</a>
+          <a href="forecasting.html" class="active" aria-current="page">Forecast</a>
+          <a href="data.html">Data Monitor</a>
+          <a href="docs.html">Documentation</a>
+        </nav>
+      </div>
+
+      <div class="header-actions apix-header-actions">
+        <div class="header-search apix-search-wrap">
+          <span class="header-search__icon">&#128065;</span>
+          <input type="text" id="globalSearchInput" class="header-search__input apix-search-input" placeholder="Search..." autocomplete="off" />
+          <div id="globalSearchResults" class="search-dropdown"></div>
+        </div>
+
+        <button class="theme-toggle apix-theme-toggle" id="themeToggle" aria-label="Toggle dark/light theme" title="Toggle theme">
+          <span class="theme-icon">&#9728;</span><span>Light</span>
+        </button>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mainNav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="forecasting-page-container">
+    <!-- Hero Header Title -->
+    <section class="forecasting-hero-heading">
+      <div class="forecasting-title-group">
+        <h1 class="forecasting-main-title">ARIMA Machine Learning &amp; Price Forecasting</h1>
+        <p class="forecasting-main-subtitle">
+          MoSPI (NSO) &amp; RBI Retail Inflation Platform: Forecast airfare price trajectories, CPI inflation windows, and DGCA route capacity risks.
+        </p>
+        <div class="hero-meta-row">
+          <span class="live-data-pill"><span class="live-pulse"></span>Live Econometric Model</span>
+          <span class="arima-meta-pill">Model: ARIMA(2,1,1) + Seasonal STL</span>
+          <span class="arima-meta-pill">95% Confidence Interval</span>
+        </div>
+      </div>
+
+      <button id="btnToggleBeginnerGuide" class="btn-guide-toggle">
+        <span>🏛️</span> <span>Government Analyst Guide</span>
+      </button>
+    </section>
+
+    <!-- 4-Column Bento KPI Cards -->
+    <section class="forecasting-bento-grid" aria-label="Forecasting summary KPIs">
+      <div class="forecasting-bento-card">
+        <div class="bento-card-header">
+          <span class="bento-card-label">14-Day Forecast Avg Fare</span>
+          <span class="bento-card-icon icon-blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+              <polyline points="17 6 23 6 23 12"></polyline>
+            </svg>
+          </span>
+        </div>
+        <div class="bento-card-value" id="kpiPredictedFare">₹10,540</div>
+        <div class="bento-card-subtext" id="kpiPredictedChange" style="color: #10b981;">+4.8% vs Baseline</div>
+      </div>
+
+      <div class="forecasting-bento-card">
+        <div class="bento-card-header">
+          <span class="bento-card-label">Active Surge Alerts</span>
+          <span class="bento-card-icon icon-orange">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </span>
+        </div>
+        <div class="bento-card-value" id="kpiSurgeCount" style="color: #10b981;">0 Active</div>
+        <div class="bento-card-subtext" id="kpiSurgeSubtext">High/Critical Risk Days</div>
+      </div>
+
+      <div class="forecasting-bento-card">
+        <div class="bento-card-header">
+          <span class="bento-card-label">Outage / Supply Risks</span>
+          <span class="bento-card-icon icon-red">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </span>
+        </div>
+        <div class="bento-card-value" id="kpiOutageCount">0 Sectors</div>
+        <div class="bento-card-subtext">Supply Disruption Warning</div>
+      </div>
+
+      <div class="forecasting-bento-card">
+        <div class="bento-card-header">
+          <span class="bento-card-label">ARIMA Model Fit (R²)</span>
+          <span class="bento-card-icon icon-green">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </span>
+        </div>
+        <div class="bento-card-value" id="kpiModelR2" style="color: #10b981;">0.94</div>
+        <div class="bento-card-subtext" id="kpiModelError">RMSE: ₹345 | MAE: ₹311</div>
+      </div>
+    </section>
+
+    <!-- Econometric Model Controls & Filters Card -->
+    <section class="forecasting-card">
+      <div class="forecasting-card-header">
+        <div>
+          <h2 class="forecasting-card-title">
+            <span>⚙️</span> <span>Econometric Model Controls &amp; Route Selectors</span>
+          </h2>
+          <span class="forecasting-card-subtitle">Tune sector parameters, forecast windows, and ARIMA order terms</span>
+        </div>
+      </div>
+      <div class="controls-grid">
+        <div class="ctrl-field">
+          <label class="ctrl-label">Flight Route Sector</label>
+          <select id="selRoute" class="ctrl-select">
+            <option value="ALL">All National Sectors (Network)</option>
+            <option value="DEL-BOM">DEL → BOM (Delhi - Mumbai)</option>
+            <option value="BOM-BLR">BOM → BLR (Mumbai - Bengaluru)</option>
+            <option value="DEL-HYD">DEL → HYD (Delhi - Hyderabad)</option>
+            <option value="DEL-CCU">DEL → CCU (Delhi - Kolkata)</option>
+            <option value="BOM-DEL">BOM → DEL (Mumbai - Delhi)</option>
+          </select>
+        </div>
+
+        <div class="ctrl-field">
+          <label class="ctrl-label">Airline Carrier</label>
+          <select id="selAirline" class="ctrl-select">
+            <option value="ALL">All Airlines (Industry Average)</option>
+            <option value="IndiGo">IndiGo (6E)</option>
+            <option value="Air India">Air India (AI)</option>
+            <option value="SpiceJet">SpiceJet (SG)</option>
+            <option value="Akasa Air">Akasa Air (QP)</option>
+          </select>
+        </div>
+
+        <div class="ctrl-field">
+          <label class="ctrl-label">Forecast Horizon</label>
+          <select id="selDays" class="ctrl-select">
+            <option value="7">7 Days Ahead</option>
+            <option value="14">14 Days Ahead</option>
+            <option value="30" selected>30 Days Ahead</option>
+          </select>
+        </div>
+
+        <div class="ctrl-field">
+          <label class="ctrl-label">Econometric Model Preset</label>
+          <select id="selModelPreset" class="ctrl-select">
+            <option value="auto">🤖 Auto-ARIMA AIC Optimization</option>
+            <option value="balanced" selected>🏛️ MoSPI CPI Baseline (Recommended)</option>
+            <option value="quick">⚡ Short-Term Spot Volatility Monitor</option>
+            <option value="festive">📊 Festive &amp; Macro Surge Stress Test</option>
+            <option value="custom">🛠️ Custom Specification (p,d,q)</option>
+          </select>
+        </div>
+
+        <div class="ctrl-field" id="customPdqField" style="display: none;">
+          <label class="ctrl-label">Custom Order (p, d, q)</label>
+          <div class="pdq-group">
+            <select id="selP" class="pdq-select">
+              <option value="auto">Auto</option>
+              <option value="1">p=1</option>
+              <option value="2" selected>p=2</option>
+              <option value="3">p=3</option>
+            </select>
+            <select id="selD" class="pdq-select">
+              <option value="auto">Auto</option>
+              <option value="0">d=0</option>
+              <option value="1" selected>d=1</option>
+              <option value="2">d=2</option>
+            </select>
+            <select id="selQ" class="pdq-select">
+              <option value="auto">Auto</option>
+              <option value="0">q=0</option>
+              <option value="1" selected>q=1</option>
+              <option value="2">q=2</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ctrl-field">
+          <button id="btnRunForecast" class="btn-forecast-run">
+            <span>▶</span> <span>Run ARIMA Forecast</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main ARIMA Forecast Chart Card -->
+    <section class="forecasting-card">
+      <div class="forecasting-card-header">
+        <div>
+          <h2 class="forecasting-card-title">
+            Historical Fares vs. ARIMA Forecast (95% Confidence Interval)
+          </h2>
+          <span class="forecasting-card-subtitle">
+            Solid blue line represents historical daily average fares; dashed purple line shows ARIMA model point prediction with shaded 95% confidence bounds.
+          </span>
+        </div>
+        <div class="forecasting-badge-tag" id="modelSpecDisplay">
+          Model: ARIMA(2,1,1) | Horizon: 30 Days
+        </div>
+      </div>
+      <div class="forecast-chart-box">
+        <canvas id="arimaForecastChart"></canvas>
+      </div>
+    </section>
+
+    <!-- 2-Column Grid: Surge Timeline & Outage Radar -->
+    <div class="forecasting-grid-2col">
+      <!-- Surge Intensity Chart -->
+      <section class="forecasting-card" style="margin-bottom: 0;">
+        <div class="forecasting-card-header">
+          <div>
+            <h3 class="forecasting-card-title">
+              Predicted Price Surge Intensity Timeline (%)
+            </h3>
+            <span class="forecasting-card-subtitle">
+              Flags forecast dates where price increase exceeds baseline threshold (+15% Moderate, +25% High, +40% Critical).
+            </span>
+          </div>
+          <div class="forecasting-badge-tag" id="surgeRiskBadge">
+            Surge Status: Nominal
+          </div>
+        </div>
+        <div class="forecast-chart-box--sm">
+          <canvas id="surgeRiskChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Outage & Supply Vulnerability Radar -->
+      <section class="forecasting-card" style="margin-bottom: 0;">
+        <div class="forecasting-card-header">
+          <div>
+            <h3 class="forecasting-card-title">
+              Route Outage &amp; Supply Disruption Vulnerability Radar
+            </h3>
+            <span class="forecasting-card-subtitle">
+              Evaluates route capacity bottleneck risk, upper confidence volatility spread, and inventory shortage risk.
+            </span>
+          </div>
+          <div class="forecasting-badge-tag" id="outageRiskBadge">
+            Vulnerability: 24/100 (Safe)
+          </div>
+        </div>
+        <div class="forecast-chart-box--sm">
+          <canvas id="outageRiskChart"></canvas>
+        </div>
+      </section>
+    </div>
+
+    <!-- Day-by-Day Forecast Schedule Table & Risk Log -->
+    <div class="forecasting-grid-table-log" style="margin-top: 24px;">
+      <!-- Forecast Table -->
+      <section class="forecasting-card forecasting-card--fill-height">
+        <div class="forecasting-card-header">
+          <div>
+            <h3 class="forecasting-card-title">
+              Day-by-Day ARIMA Forecast Schedule
+            </h3>
+            <span class="forecasting-card-subtitle">
+              Step-by-step point predictions, confidence bounds, and standard error tolerances.
+            </span>
+          </div>
+        </div>
+        <div class="forecast-table-wrapper">
+          <table class="forecast-data-table">
+            <thead>
+              <tr>
+                <th>Step</th>
+                <th>Target Date</th>
+                <th>Day</th>
+                <th>Predicted Fare</th>
+                <th>95% Lower CI</th>
+                <th>95% Upper CI</th>
+                <th>Std Error</th>
+                <th>Status / Surge</th>
+              </tr>
+            </thead>
+            <tbody id="forecastTableBody">
+              <tr>
+                <td colspan="8" style="text-align: center; color: var(--color-text-muted, #64748b); padding: 20px;">
+                  Loading ARIMA prediction schedule...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Live Surge & Outage Risk Log -->
+      <section class="forecasting-card forecasting-card--fill-height">
+        <div class="forecasting-card-header">
+          <div style="width: 100%;">
+            <h3 class="forecasting-card-title" style="display: flex; align-items: center; justify-content: space-between;">
+              <span>Surge &amp; Outage Risk Log</span>
+              <span class="live-data-pill" style="font-size: 0.72rem;" id="riskLogBadge">Live Audit</span>
+            </h3>
+            <span class="forecasting-card-subtitle">
+              Automated anomaly detection alerts &amp; recommendations.
+            </span>
+          </div>
+        </div>
+        <div id="riskLogContainer" class="forecasting-risk-feed">
+          <div style="text-align: center; color: #94a3b8; padding: 20px;">
+            Evaluating risk logs...
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Interactive Government Analyst Explanation Modal Overlay -->
+  <div class="guide-modal-overlay" id="beginnerModal" style="display: none;">
+    <div class="guide-modal">
+      <div class="guide-modal-header">
+        <h3 class="guide-modal-title">🏛️ Government Analyst Guide to Inflation &amp; Capacity Forecasting</h3>
+        <button class="guide-modal-close" id="btnCloseModal">&times;</button>
+      </div>
+      <div class="guide-modal-body">
+        <p>Welcome! This econometric portal provides <strong>Ministry of Statistics &amp; Programme Implementation (MoSPI - NSO)</strong> and <strong>Reserve Bank of India (RBI)</strong> analysts with automated Machine Learning forecasts of airfare retail inflation and DGCA route capacity bottlenecks.</p>
+        
+        <div class="guide-modal-section">
+          <h4>1. How to Interpret the Econometric Forecast Graph</h4>
+          <ul>
+            <li><strong style="color: #38bdf8;">Solid Blue Line:</strong> Historical daily average fares aggregated directly from scraped retail airline fare documents.</li>
+            <li><strong style="color: #c084fc;">Dashed Purple Line:</strong> ARIMA model point forecast (\hat{Y}_{t+h}) projecting the fare trajectory over the selected horizon.</li>
+            <li><strong style="color: #e879f9;">Shaded Purple Envelope:</strong> 95% Confidence Interval (CI_{95\%}) probability bounds (\hat{Y}_{t+h} \pm 1.645 \cdot \text{StdErr}).</li>
+          </ul>
+        </div>
+
+        <div class="guide-modal-section">
+          <h4>2. What do the Inflation &amp; Surge Risk Alerts Indicate?</h4>
+          <ul>
+            <li><strong style="color: #38bdf8;">Moderate Alert (+12% to +21%):</strong> Normal seasonal price acceleration; minimal impact on MoSPI CPI transport sub-index.</li>
+            <li><strong style="color: #fb923c;">High Alert (+22% to +34%):</strong> Elevated yield compression; adds +0.20% to +0.30% upward pressure on retail inflation.</li>
+            <li><strong style="color: #f87171;">Critical Outage Alert (≥ +35%):</strong> Severe seat inventory exhaustion; triggers DGCA fleet capacity intervention flags.</li>
+          </ul>
+        </div>
+
+        <div class="guide-modal-section">
+          <h4>3. Selecting Econometric Model Presets</h4>
+          <p>Use the <strong>Econometric Model Preset</strong> dropdown in the control bar to select the target analysis mode:</p>
+          <ul>
+            <li><strong>🏛️ MoSPI CPI Baseline:</strong> Recommended standard for official NSO retail price index reporting.</li>
+            <li><strong>⚡ Short-Term Spot Volatility:</strong> Fast-reacting model for 24-48h flash price monitoring.</li>
+            <li><strong>📊 Festive &amp; Macro Surge Stress Test:</strong> Deep memory model configured for peak holiday surge windows.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="guide-modal-footer">
+        <button class="btn-primary" id="btnGotIt">Access Platform Controls</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>&copy; 2026 Airfare Price Index (APIx) - NSO (MoSPI) &amp; RBI Retail Inflation Engine</span>
+      <span>ARIMA Machine Learning Portal</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/forecasting.js"></script>
+</body>
+</html>

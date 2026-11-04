@@ -1,0 +1,1311 @@
+/* ============================================================
+   APIx Airfare Index - Overview / Dashboard Styles
+   Matches the Modern Cyber-Aviation Dark UI Mockup
+   With Full Light Mode Support & Sector Heatmap Matrix
+   ============================================================ */
+
+/* ----------------- Page Base & Background ----------------- */
+body.dashboard-page {
+  position: relative;
+  background-color: #050e1d;
+  color: #f1f5f9;
+  font-family: 'Plus Jakarta Sans', "Segoe UI", system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Dedicated Full-Width Plane Background Layer for Hero & KPI Band only */
+.hero-plane-backdrop-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 540px;
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 320px, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 320px, rgba(0, 0, 0, 0) 100%);
+  background-image:
+    linear-gradient(180deg, rgba(5, 14, 29, 0.12) 0%, rgba(5, 14, 29, 0.32) 180px, rgba(5, 14, 29, 0.76) 360px, #050e1d 510px),
+    linear-gradient(90deg, rgba(5, 14, 29, 0.92) 0%, rgba(5, 14, 29, 0.7) 38%, rgba(5, 14, 29, 0.22) 68%, rgba(5, 14, 29, 0.05) 100%),
+    url('../assets/images/overview-plane.jpg');
+  background-position: right center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.dashboard-container {
+  position: relative;
+  z-index: 10;
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 24px 24px 64px 24px;
+}
+
+/* ----------------- Navigation Header ----------------- */
+.apix-nav-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(5, 14, 29, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+  height: 64px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-inner-custom {
+  max-width: 1260px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.nav-left-group {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.apix-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.apix-logo-icon {
+  font-size: 1.55rem;
+  color: #0284c7;
+  display: inline-block;
+  transform: rotate(-35deg);
+  line-height: 1;
+  filter: drop-shadow(0 2px 8px rgba(2, 132, 199, 0.6));
+}
+
+.apix-brand-col {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.apix-logo-text {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.apix-platform-tag {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+/* Clean Nav links overriding global button styles */
+.apix-nav-header .main-nav,
+.apix-main-nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.apix-nav-header .main-nav a,
+.apix-main-nav a {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: #94a3b8 !important;
+  font-size: 0.88rem !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  padding: 20px 2px !important;
+  position: relative;
+  transition: color 0.2s ease !important;
+}
+
+.apix-nav-header .main-nav a:hover,
+.apix-main-nav a:hover {
+  background: transparent !important;
+  color: #e2e8f0 !important;
+  text-decoration: none !important;
+}
+
+.apix-nav-header .main-nav a.active,
+.apix-main-nav a.active {
+  background: transparent !important;
+  color: #38bdf8 !important;
+  font-weight: 600 !important;
+}
+
+.apix-nav-header .main-nav a.active::after,
+.apix-main-nav a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: #38bdf8;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+}
+
+.apix-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.apix-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.apix-search-input {
+  background: rgba(14, 30, 58, 0.7) !important;
+  border: 1px solid rgba(56, 189, 248, 0.2) !important;
+  border-radius: 8px !important;
+  padding: 7px 12px 7px 32px !important;
+  color: #f1f5f9 !important;
+  font-size: 0.82rem !important;
+  width: 170px !important;
+  transition: all 0.2s ease !important;
+}
+
+.apix-search-input:focus {
+  width: 220px !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25) !important;
+  outline: none !important;
+}
+
+.apix-search-wrap .header-search__icon {
+  position: absolute;
+  left: 10px;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  pointer-events: none;
+}
+
+.apix-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 12px;
+  gap: 6px;
+  border-radius: 8px;
+  background: rgba(14, 30, 58, 0.7);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.apix-theme-toggle:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+/* ----------------- Hero Section ----------------- */
+.hero-overview-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 24px 0 32px 0;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.hero-title-group {
+  max-width: 680px;
+}
+
+.hero-main-title {
+  font-size: 2.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+  line-height: 1.15;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.hero-main-subtitle {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  margin: 0 0 14px 0;
+  line-height: 1.45;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+.hero-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.live-data-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+.live-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.hero-action-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.hero-motto {
+  font-size: 0.88rem;
+  color: #e2e8f0;
+  max-width: 220px;
+  text-align: right;
+  line-height: 1.35;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+
+.btn-export-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(14, 30, 58, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.btn-export-custom:hover {
+  background: rgba(2, 132, 199, 0.25);
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ----------------- 4-Column Bento KPI Grid ----------------- */
+.kpi-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.kpi-bento-card {
+  background: rgba(14, 30, 58, 0.82);
+  border: 1px solid rgba(56, 189, 248, 0.14);
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 140px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-bento-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.kpi-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kpi-card-label {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.kpi-card-icon {
+  color: #38bdf8;
+  opacity: 0.85;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpi-card-value {
+  font-size: 1.95rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  margin: 6px 0;
+  letter-spacing: -0.02em;
+}
+
+.kpi-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.kpi-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.kpi-badge.up {
+  color: #34d399;
+}
+
+.kpi-badge.down {
+  color: #f87171;
+}
+
+.kpi-sub-text {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.status-dot-green {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+  display: inline-block;
+}
+
+/* ----------------- Bottom 2-Column Section ----------------- */
+.bottom-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.trend-card,
+.top-routes-card {
+  background: rgba(14, 30, 58, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.12);
+  border-radius: 12px;
+  padding: 20px 22px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Trend Card Header */
+.card-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.chart-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-title-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+}
+
+.card-heading-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.trend-time-filters {
+  display: flex;
+  background: rgba(6, 17, 36, 0.8);
+  padding: 3px;
+  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  gap: 2px;
+}
+
+.trend-time-btn {
+  border: none;
+  background: transparent;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.trend-time-btn:hover {
+  color: #ffffff;
+}
+
+.trend-time-btn.active {
+  background: #0284c7;
+  color: #ffffff;
+  box-shadow: 0 1px 6px rgba(2, 132, 199, 0.4);
+}
+
+.trend-chart-canvas {
+  position: relative;
+  flex: 1;
+  min-height: 280px;
+  width: 100%;
+}
+
+/* Top Routes Card */
+.view-all-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #38bdf8;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.15s ease;
+}
+
+.view-all-link:hover {
+  color: #7dd3fc;
+  text-decoration: underline;
+}
+
+.top-routes-table-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-routes-header-row {
+  display: grid;
+  grid-template-columns: 36px 1fr 100px 75px;
+  align-items: center;
+  padding: 8px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+  margin-bottom: 4px;
+}
+
+.top-route-item-row {
+  display: grid;
+  grid-template-columns: 36px 1fr 100px 75px;
+  align-items: center;
+  padding: 11px 10px;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.06);
+  transition: background 0.15s ease;
+  border-radius: 6px;
+}
+
+.top-route-item-row:hover {
+  background: rgba(56, 189, 248, 0.05);
+}
+
+.top-route-item-row:last-child {
+  border-bottom: none;
+}
+
+.route-rank-pill {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.12);
+  color: #cbd5e1;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.route-name-text {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.route-fare-text {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.route-mom-text {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #34d399;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  justify-content: flex-end;
+}
+
+.route-mom-text.down {
+  color: #f87171;
+}
+
+/* ----------------- Sector-Wise Heatmap Matrix ----------------- */
+.heatmap-section-card {
+  background: rgba(14, 30, 58, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.12);
+  border-radius: 12px;
+  padding: 24px 26px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  margin-top: 24px;
+}
+
+.heatmap-section-header {
+  margin-bottom: 20px;
+}
+
+.heatmap-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.01em;
+}
+
+.heatmap-subtitle {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.heatmap-card {
+  background: rgba(6, 17, 36, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.12);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.heatmap-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.heatmap-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heatmap-card__pair {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.heatmap-card__weight {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #94a3b8;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.12);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.heatmap-windows {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.heatmap-win-cell {
+  padding: 8px 4px;
+  border-radius: 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.heatmap-win-cell__lbl {
+  font-size: 0.68rem;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.heatmap-win-cell__val {
+  font-size: 0.82rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dark Mode Heatmap Cell Colors */
+.heatmap-win-cell.surge-low {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.heatmap-win-cell.surge-mid {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.heatmap-win-cell.surge-high {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+/* ----------------- Lower Split: Lead-Time & Airline Comparison ----------------- */
+.overview-split-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 20px;
+  margin-top: 24px;
+  align-items: stretch;
+}
+
+.split-section-card {
+  background: rgba(14, 30, 58, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.14);
+  border-radius: 12px;
+  padding: 24px 26px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+}
+
+.split-card-header {
+  margin-bottom: 18px;
+}
+
+.split-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.split-card-title {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.split-card-subtitle {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin: 4px 0 0 16px;
+}
+
+/* Lead-Time List */
+.leadtime-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 590px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.leadtime-list-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.leadtime-list-container::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.3);
+  border-radius: 4px;
+}
+
+.leadtime-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(6, 17, 36, 0.65);
+  border: 1px solid rgba(56, 189, 248, 0.08);
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+.leadtime-row:hover {
+  background: rgba(56, 189, 248, 0.08);
+  border-color: rgba(56, 189, 248, 0.28);
+  transform: translateX(3px);
+}
+
+.leadtime-row-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.leadtime-window-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  font-variant-numeric: tabular-nums;
+  min-width: 44px;
+  text-align: center;
+}
+
+.leadtime-days-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.leadtime-days-sub {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  display: block;
+}
+
+.leadtime-row-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.leadtime-fare-amount {
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.surge-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.surge-tag--high {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.surge-tag--mid {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.surge-tag--low {
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+/* Airline Carrier Comparison Cards */
+.airlines-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.airline-carrier-card {
+  background: rgba(6, 17, 36, 0.65);
+  border: 1px solid rgba(56, 189, 248, 0.1);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.airline-carrier-card:hover {
+  background: rgba(56, 189, 248, 0.07);
+  border-color: rgba(56, 189, 248, 0.32);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.airline-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.airline-brand-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.airline-iata-tag {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.airline-iata-tag--6E { background: rgba(2, 132, 199, 0.25); color: #38bdf8; border: 1px solid rgba(2, 132, 199, 0.4); }
+.airline-iata-tag--AI { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+.airline-iata-tag--QP { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+.airline-iata-tag--SG { background: rgba(220, 38, 38, 0.2); color: #fca5a5; border: 1px solid rgba(220, 38, 38, 0.4); }
+.airline-iata-tag--IX { background: rgba(249, 115, 22, 0.2); color: #fdba74; border: 1px solid rgba(249, 115, 22, 0.4); }
+
+.airline-title-text {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.airline-quote-count {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  display: block;
+}
+
+.airline-stats-group {
+  text-align: right;
+}
+
+.airline-avg-price {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #38bdf8;
+  font-variant-numeric: tabular-nums;
+  display: block;
+}
+
+.airline-share-pill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.airline-bar-track-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.airline-bar-track {
+  background: rgba(56, 189, 248, 0.1);
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(56, 189, 248, 0.08);
+}
+
+.airline-bar-fill {
+  background: linear-gradient(90deg, #0284c7, #38bdf8);
+  height: 100%;
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.airline-range-spread {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ----------------- Full Light Theme Mode Support ----------------- */
+[data-theme="light"] body.dashboard-page,
+body.dashboard-page[data-theme="light"],
+html[data-theme="light"] body.dashboard-page {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .hero-plane-backdrop-layer {
+  filter: contrast(1.28) brightness(0.95) saturate(1.22);
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.95) 240px, rgba(0, 0, 0, 0.4) 400px, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.95) 240px, rgba(0, 0, 0, 0.4) 400px, rgba(0, 0, 0, 0) 100%);
+  background-image:
+    linear-gradient(90deg, rgba(248, 250, 252, 0.98) 0%, rgba(248, 250, 252, 0.85) 35%, rgba(248, 250, 252, 0.18) 65%, rgba(248, 250, 252, 0) 100%),
+    url('../assets/images/overview-plane.jpg');
+}
+
+[data-theme="light"] .apix-nav-header {
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom-color: #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .apix-brand {
+  color: #0f172a;
+}
+
+[data-theme="light"] .apix-logo-text,
+[data-theme="light"] .hero-main-title,
+[data-theme="light"] .kpi-card-value,
+[data-theme="light"] .card-heading-text,
+[data-theme="light"] .route-name-text,
+[data-theme="light"] .route-fare-text,
+[data-theme="light"] .heatmap-title,
+[data-theme="light"] .heatmap-card__pair {
+  color: #0f172a;
+}
+
+[data-theme="light"] .hero-main-title,
+[data-theme="light"] .hero-main-subtitle {
+  text-shadow: none;
+}
+
+[data-theme="light"] .hero-motto {
+  color: #334155;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85);
+}
+
+[data-theme="light"] .apix-platform-tag,
+[data-theme="light"] .hero-main-subtitle,
+[data-theme="light"] .kpi-card-label,
+[data-theme="light"] .kpi-sub-text,
+[data-theme="light"] .top-routes-header-row,
+[data-theme="light"] .hero-meta-row,
+[data-theme="light"] .heatmap-subtitle {
+  color: #64748b;
+}
+
+[data-theme="light"] .apix-main-nav a {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .apix-main-nav a:hover,
+[data-theme="light"] .apix-main-nav a.active {
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .kpi-bento-card,
+[data-theme="light"] .trend-card,
+[data-theme="light"] .top-routes-card,
+[data-theme="light"] .heatmap-section-card,
+[data-theme="light"] .split-section-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .kpi-bento-card:hover,
+[data-theme="light"] .trend-card:hover,
+[data-theme="light"] .top-routes-card:hover,
+[data-theme="light"] .split-section-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .leadtime-row {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .leadtime-row:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+[data-theme="light"] .leadtime-window-badge {
+  background: #e0f2fe;
+  color: #0284c7;
+  border-color: #bae6fd;
+}
+
+[data-theme="light"] .leadtime-days-text,
+[data-theme="light"] .airline-title-text,
+[data-theme="light"] .split-card-title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .leadtime-fare-amount,
+[data-theme="light"] .airline-avg-price {
+  color: #0284c7;
+}
+
+[data-theme="light"] .leadtime-days-sub,
+[data-theme="light"] .airline-quote-count,
+[data-theme="light"] .airline-share-pill,
+[data-theme="light"] .split-card-subtitle {
+  color: #64748b;
+}
+
+[data-theme="light"] .airline-carrier-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .airline-carrier-card:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .airline-bar-track {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+[data-theme="light"] .airline-bar-fill {
+  background: linear-gradient(90deg, #0284c7, #38bdf8);
+  box-shadow: 0 0 8px rgba(2, 132, 199, 0.3);
+}
+
+[data-theme="light"] .surge-tag--high {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fee2e2;
+}
+
+[data-theme="light"] .surge-tag--mid {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+[data-theme="light"] .surge-tag--low {
+  background: #ecfdf5;
+  color: #059669;
+  border-color: #d1fae5;
+}
+
+[data-theme="light"] .btn-export-custom {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0284c7;
+}
+
+[data-theme="light"] .btn-export-custom:hover {
+  background: #f0f9ff;
+  border-color: #0284c7;
+  color: #0284c7;
+}
+
+[data-theme="light"] .apix-search-input {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .apix-theme-toggle {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+[data-theme="light"] .trend-time-filters {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .trend-time-btn {
+  color: #64748b;
+}
+
+[data-theme="light"] .trend-time-btn.active {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+[data-theme="light"] .top-route-item-row:hover {
+  background: #f8fafc;
+}
+
+[data-theme="light"] .route-rank-pill {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+[data-theme="light"] .heatmap-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .heatmap-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .heatmap-card__weight {
+  color: #64748b;
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .heatmap-win-cell.surge-low {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #d1fae5;
+}
+
+[data-theme="light"] .heatmap-win-cell.surge-mid {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+[data-theme="light"] .heatmap-win-cell.surge-high {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fee2e2;
+}
+
+[data-theme="light"] .apix-footer {
+  background: #f8fafc !important;
+  border-top-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+/* ----------------- Responsive Adjustments ----------------- */
+@media (max-width: 1100px) {
+  .heatmap-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .kpi-bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bottom-dashboard-grid,
+  .overview-split-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .heatmap-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .hero-plane-backdrop-layer {
+    height: 600px;
+  }
+  .hero-overview-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .hero-action-group {
+    align-items: flex-start;
+  }
+  .hero-motto {
+    text-align: left;
+  }
+  .kpi-bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .heatmap-grid {
+    grid-template-columns: 1fr;
+  }
+  .apix-platform-tag {
+    display: none;
+  }
+}

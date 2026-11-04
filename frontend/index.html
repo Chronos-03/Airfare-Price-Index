@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('apix_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = savedTheme || (prefersDark ? 'dark' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Airfare Price Index (APIx) - Real-time insights into domestic airfare movement across major city pairs." />
+  <title>Overview - APIx Airfare Price Intelligence</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="alternate icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body class="dashboard-page" data-theme="dark">
+  <!-- Top Full-Width Plane Background Layer (extends only across the hero & KPI band) -->
+  <div class="hero-plane-backdrop-layer" aria-hidden="true"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="site-header apix-nav-header">
+    <div class="header-inner nav-inner-custom">
+      <div class="nav-left-group">
+        <a class="brand apix-brand" href="index.html" aria-label="APIx Home">
+          <span class="apix-logo-icon" aria-hidden="true">&#9992;</span>
+          <div class="apix-brand-col">
+            <span class="apix-logo-text">APIx</span>
+            <span class="apix-platform-tag">Airfare Price Intelligence Platform</span>
+          </div>
+        </a>
+
+        <nav class="main-nav apix-main-nav" id="mainNav" aria-label="Primary">
+          <a href="index.html" class="active" aria-current="page">Overview</a>
+          <a href="routes.html">Routes</a>
+          <a href="analysis.html">Analytics</a>
+          <a href="forecasting.html">Forecast</a>
+          <a href="data.html">Data Monitor</a>
+          <a href="docs.html">Documentation</a>
+        </nav>
+      </div>
+
+      <div class="header-actions apix-header-actions">
+        <div class="header-search apix-search-wrap">
+          <span class="header-search__icon">&#128065;</span>
+          <input type="text" id="globalSearchInput" class="header-search__input apix-search-input" placeholder="Search..." autocomplete="off" />
+          <div id="globalSearchResults" class="search-dropdown"></div>
+        </div>
+
+        <button class="theme-toggle apix-theme-toggle" id="themeToggle" aria-label="Toggle dark/light theme" title="Toggle theme">
+          <span class="theme-icon">&#9728;</span><span>Light</span>
+        </button>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mainNav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-container">
+    <!-- Hero Overview Section -->
+    <section class="hero-overview-section">
+      <div class="hero-title-group">
+        <h1 class="hero-main-title">India's Airfare, In Focus</h1>
+        <p class="hero-main-subtitle">Real-time insights into domestic airfare movement across major city pairs.</p>
+        <div class="hero-meta-row">
+          <span id="heroTimestamp">Last updated 24 Sep 2026 &bull; 10.42 AM</span>
+          <span class="live-data-pill"><span class="live-pulse"></span>Live Data</span>
+        </div>
+      </div>
+
+      <div class="hero-action-group">
+        <span class="hero-motto">Better data for a more connected India.</span>
+        <button class="btn-export-custom" id="btnExportNso" title="Export Dataset">
+          Export <span class="export-arrow">&#128229;</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 4-Column Bento KPI Cards -->
+    <section class="kpi-bento-grid" aria-label="Key Performance Indicators">
+      <!-- Card 1: APIx -->
+      <div class="kpi-bento-card">
+        <div class="kpi-card-header">
+          <span class="kpi-card-label">APIx</span>
+          <span class="kpi-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+              <polyline points="16 7 22 7 22 13"></polyline>
+            </svg>
+          </span>
+        </div>
+        <div class="kpi-card-value" id="kpi-index-value">104.72</div>
+        <div class="kpi-card-footer">
+          <span class="kpi-badge up" id="kpi-index-delta">&#9650; +2.4% vs previous period</span>
+          <span class="kpi-sub-text">Base period = 100</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Average Fare -->
+      <div class="kpi-bento-card">
+        <div class="kpi-card-header">
+          <span class="kpi-card-label">Average Fare</span>
+          <span class="kpi-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="12" width="4" height="9"></rect>
+              <rect x="10" y="7" width="4" height="14"></rect>
+              <rect x="17" y="3" width="4" height="18"></rect>
+            </svg>
+          </span>
+        </div>
+        <div class="kpi-card-value" id="kpi-avgfare-value">&#8377;4,286</div>
+        <div class="kpi-card-footer">
+          <span class="kpi-badge up" id="kpi-avgfare-delta">&#9650; +4.43% (+&#8377;182)</span>
+          <span class="kpi-sub-text">Across all routes</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Data Quality -->
+      <div class="kpi-bento-card">
+        <div class="kpi-card-header">
+          <span class="kpi-card-label">Data Quality</span>
+          <span class="kpi-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <path d="M9 12l2 2 4-4"></path>
+            </svg>
+          </span>
+        </div>
+        <div class="kpi-card-value" id="kpi-quality-value">99.1%</div>
+        <div class="kpi-card-footer">
+          <span class="kpi-badge up" id="kpi-quality-status"><span class="status-dot-green"></span> Excellent</span>
+          <span class="kpi-sub-text">Validated quotes</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Active Routes -->
+      <div class="kpi-bento-card">
+        <div class="kpi-card-header">
+          <span class="kpi-card-label">Active Routes</span>
+          <span class="kpi-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="19" r="3"></circle>
+              <path d="M9 19h8.5a4.5 4.5 0 0 0 0-9H5"></path>
+              <polyline points="8 6 5 10 8 14"></polyline>
+            </svg>
+          </span>
+        </div>
+        <div class="kpi-card-value" id="kpi-routes-value">72</div>
+        <div class="kpi-card-footer">
+          <span class="kpi-sub-text" id="kpi-routes-sub1" style="color:#cbd5e1; font-weight:600;">6 airlines &bull; 30 cities</span>
+          <span class="kpi-sub-text">Domestic network</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom 2-Column Split: Trend Chart & Top Routes -->
+    <section class="bottom-dashboard-grid">
+      <!-- Left: Airfare Index Trend -->
+      <div class="trend-card">
+        <div class="card-header-flex">
+          <div class="chart-title-wrap">
+            <span class="chart-title-dot"></span>
+            <h3 class="card-heading-text">Airfare Index Trend</h3>
+          </div>
+          <div class="trend-time-filters">
+            <button class="trend-time-btn active" data-range="3M">3M</button>
+            <button class="trend-time-btn" data-range="6M">6M</button>
+            <button class="trend-time-btn" data-range="1Y">1Y</button>
+            <button class="trend-time-btn" data-range="All">All</button>
+          </div>
+        </div>
+
+        <div class="trend-chart-canvas" id="apix-chart-container">
+          <!-- Rendered via JS SVG Canvas -->
+        </div>
+      </div>
+
+      <!-- Right: Top Routes (Avg Fare) -->
+      <div class="top-routes-card">
+        <div class="card-header-flex">
+          <h3 class="card-heading-text">Top Routes (Avg Fare)</h3>
+          <a href="routes.html" class="view-all-link">View all &rarr;</a>
+        </div>
+
+        <div class="top-routes-table-wrap">
+          <div class="top-routes-header-row">
+            <span>#</span>
+            <span>Route</span>
+            <span style="text-align: right;">Fare</span>
+            <span style="text-align: right;">MoM</span>
+          </div>
+
+          <div id="top-routes-list-container">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sector-Wise Price Heatmap Matrix -->
+    <section class="heatmap-section-card" aria-label="Sector-Wise Price Heatmap">
+      <div class="heatmap-section-header">
+        <h3 class="heatmap-title">Sector-Wise Price Heatmap Matrix</h3>
+        <p class="heatmap-subtitle">Average fare escalation across Advance Booking Windows (T+45 to T+1)</p>
+      </div>
+      <div class="heatmap-grid" id="heatmap-grid-container">
+        <!-- Rendered dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- Lower Split: Lead-Time Price Escalation & Airline Carrier Comparison -->
+    <section class="overview-split-grid" aria-label="Lead-Time Elasticity and Airline Comparison">
+      <!-- Left: Lead-Time Price Escalation -->
+      <div class="split-section-card">
+        <div class="card-header-flex">
+          <h3 class="card-heading-text">Lead-Time Price Escalation (T+45 to T+1)</h3>
+        </div>
+        <div class="leadtime-list-container" id="leadtime-list-container">
+          <!-- Rendered dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- Right: Airline Carrier Comparison -->
+      <div class="split-section-card">
+        <div class="card-header-flex">
+          <h3 class="card-heading-text">Airline Carrier Comparison</h3>
+        </div>
+        <div class="airlines-bar-container" id="airline-bar-list">
+          <!-- Rendered dynamically via JS -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer apix-footer" style="background: rgba(6, 17, 36, 0.9); border-top: 1px solid rgba(56, 189, 248, 0.12); padding: 20px 24px; color: #64748b; font-size: 0.8rem; margin-top: 40px; position: relative; z-index: 10;">
+    <div class="footer-inner" style="max-width: 1260px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <span>&copy; 2026 Airfare Price Index (APIx) &bull; Domestic Aviation Intelligence</span>
+      <span>DGCA Passenger Traffic Weighted &bull; Automated Pipeline</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

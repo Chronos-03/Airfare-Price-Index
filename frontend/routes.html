@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('apix_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = savedTheme || (prefersDark ? 'dark' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Route Analysis - explore airfare movements across India's domestic network." />
+  <title>Route Analysis - APIx Airfare Index</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="alternate icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/routes.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body class="route-analysis-page" data-theme="dark">
+  <!-- Top Navigation Header -->
+  <header class="site-header apix-nav-header">
+    <div class="header-inner nav-inner-custom">
+      <div class="nav-left-group">
+        <a class="brand apix-brand" href="index.html" aria-label="APIx Home">
+          <span class="apix-logo-icon" aria-hidden="true">&#9992;</span>
+          <div class="apix-brand-col">
+            <span class="apix-logo-text">APIx</span>
+            <span class="apix-platform-tag">Airfare Price Intelligence Platform</span>
+          </div>
+        </a>
+
+        <nav class="main-nav apix-main-nav" id="mainNav" aria-label="Primary">
+          <a href="index.html">Overview</a>
+          <a href="routes.html" class="active" aria-current="page">Routes</a>
+          <a href="analysis.html">Analytics</a>
+          <a href="forecasting.html">Forecast</a>
+          <a href="data.html">Data Monitor</a>
+          <a href="docs.html">Documentation</a>
+        </nav>
+      </div>
+
+      <div class="header-actions apix-header-actions">
+        <div class="header-search apix-search-wrap">
+          <span class="header-search__icon">&#128065;</span>
+          <input type="text" id="globalSearchInput" class="header-search__input apix-search-input" placeholder="Search..." autocomplete="off" />
+          <div id="globalSearchResults" class="search-dropdown"></div>
+        </div>
+
+        <button class="theme-toggle apix-theme-toggle" id="themeToggle" aria-label="Toggle dark/light theme" title="Toggle theme">
+          <span class="theme-icon">&#9728;</span><span>Light</span>
+        </button>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mainNav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="route-page-container">
+    <!-- Hero Header Title -->
+    <section class="route-hero-heading">
+      <h1 class="route-main-title">Route Analysis</h1>
+      <p class="route-main-subtitle">Explore airfare behaviour across India's domestic network.</p>
+    </section>
+
+    <!-- Filter Hero Card & India Network Map -->
+    <section class="card route-hero-card" aria-label="Route Search and Network">
+      <div class="route-hero-grid">
+        <!-- Left Filter Form Section -->
+        <div class="hero-form-col">
+          <div class="filter-form-row">
+            <div class="form-field">
+              <label for="fOrigin">From</label>
+              <div class="select-wrapper">
+                <select id="fOrigin" aria-label="Origin Airport">
+                  <option value="DEL" selected>Delhi (DEL)</option>
+                </select>
+                <span class="select-arrow">&#9662;</span>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="fDestination">To</label>
+              <div class="select-wrapper">
+                <select id="fDestination" aria-label="Destination Airport">
+                  <option value="BOM" selected>Mumbai (BOM)</option>
+                </select>
+                <span class="select-arrow">&#9662;</span>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="fAirline">Airline</label>
+              <div class="select-wrapper">
+                <select id="fAirline" aria-label="Airline">
+                  <option value="" selected>All airlines</option>
+                </select>
+                <span class="select-arrow">&#9662;</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-form-row">
+            <div class="form-field">
+              <label for="fWindow">Booking window</label>
+              <div class="select-wrapper">
+                <select id="fWindow" aria-label="Booking Window">
+                  <option value="">All Windows</option>
+                  <option value="T+1">1 day (T+1)</option>
+                  <option value="T+7">7 days (T+7)</option>
+                  <option value="T+15">15 days (T+15)</option>
+                  <option value="T+30" selected>30 days</option>
+                  <option value="T+45">45 days (T+45)</option>
+                </select>
+                <span class="select-arrow">&#9662;</span>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="fRange">Travel date</label>
+              <div class="select-wrapper">
+                <select id="fRange" aria-label="Travel Date">
+                  <option value="" selected>September 2026</option>
+                </select>
+                <span class="select-arrow">&#9662;</span>
+              </div>
+            </div>
+
+            <div class="form-field action-field">
+              <label class="invisible-label">&nbsp;</label>
+              <button type="button" id="btnAnalyse" class="btn-analyse-primary">
+                <span>Analyse</span>
+                <span class="btn-arrow">&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right India Network Map Section -->
+        <div class="hero-map-col">
+          <div class="india-map-container" id="indiaMapContainer">
+            <div class="india-map-image-wrapper">
+              <img src="assets/images/india-map.svg" alt="India Map" class="india-map-img" id="indiaMapImg" />
+              <svg class="india-flight-canvas" id="indiaFlightCanvas" viewBox="0 0 1024 1024" preserveAspectRatio="xMidYMid meet" aria-label="Interactive India Flight Route Network Map">
+                <defs>
+                  <!-- High-Tech Neon Glow Filters -->
+                  <filter id="flightGlow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="6" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  <filter id="nodeGlowCyan" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  <filter id="nodeGlowEmerald" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+
+                  <!-- Dynamic Multi-Stop Gradient for Active Circular Flight Path -->
+                  <linearGradient id="flightArcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#38bdf8" />
+                    <stop offset="45%" stop-color="#818cf8" />
+                    <stop offset="100%" stop-color="#34d399" />
+                  </linearGradient>
+
+                  <!-- Secondary Reverse Gradient -->
+                  <linearGradient id="flightArcGradReverse" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#34d399" />
+                    <stop offset="55%" stop-color="#818cf8" />
+                    <stop offset="100%" stop-color="#38bdf8" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Background Subtle Network Mesh -->
+                <g id="mapBgMeshGroup" class="map-bg-mesh-group"></g>
+
+                <!-- Dynamic Active Flight Arc & Airplane -->
+                <g id="mapActiveArcGroup" class="map-active-arc-group"></g>
+
+                <!-- Interactive City Airport Hub Pinpoints & Badges -->
+                <g id="mapCityNodesGroup" class="map-city-nodes-group"></g>
+              </svg>
+            </div>
+
+            <!-- Dynamic Live Stats Badge Loaded Directly from MongoDB -->
+            <div class="map-stats-overlay">
+              <div class="map-stat-block">
+                <span class="stat-big-num" id="meta-routes-count">&hellip;</span>
+                <span class="stat-unit">routes</span>
+              </div>
+              <div class="map-stat-block">
+                <span class="stat-big-num" id="meta-cities-count">&hellip;</span>
+                <span class="stat-unit">cities</span>
+              </div>
+              <div class="map-badge-pill">
+                <span>A more connected</span>
+                <strong>India</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Route Overview Card & Route Landmark Banner (2 Columns) -->
+    <section class="route-overview-section" aria-label="Selected Route Overview">
+      <div class="route-overview-grid">
+        <!-- Left: Route Stats & Metrics Card -->
+        <div class="card route-stats-card">
+          <div class="route-card-header">
+            <h2 class="route-title-text" id="routeDisplayTitle">Delhi &rarr; Mumbai</h2>
+          </div>
+
+          <!-- Plane Trajectory Flight Strip -->
+          <div class="route-flight-strip">
+            <span class="route-iata-badge" id="routeOrigCode">DEL</span>
+            <div class="flight-dotted-line">
+              <span class="flight-line-plane" title="Flight Direction">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" transform="rotate(90 12 12)" />
+                </svg>
+              </span>
+            </div>
+            <span class="route-iata-badge" id="routeDestCode">BOM</span>
+          </div>
+
+          <!-- 4 Core Metrics Grid -->
+          <div class="route-metrics-row">
+            <div class="metric-item">
+              <div class="metric-value" id="kpi-avg">&#8377;4,820</div>
+              <div class="metric-label">Average fare</div>
+            </div>
+
+            <div class="metric-item">
+              <div class="metric-value text-accent-green" id="kpi-movement">+8.4%</div>
+              <div class="metric-label">30-day movement</div>
+            </div>
+
+            <div class="metric-item">
+              <div class="metric-value" id="kpi-min">&#8377;3,920</div>
+              <div class="metric-label">Minimum fare</div>
+            </div>
+
+            <div class="metric-item">
+              <div class="metric-value" id="kpi-max">&#8377;6,210</div>
+              <div class="metric-label">Maximum fare</div>
+            </div>
+          </div>
+
+          <!-- Hidden elements for script compatibility -->
+          <span id="kpi-median" style="display:none;"></span>
+          <span id="kpi-spread" style="display:none;"></span>
+          <span id="kpi-count" style="display:none;"></span>
+          <span id="kpi-avg-delta" style="display:none;"></span>
+          <span id="kpi-median-delta" style="display:none;"></span>
+          <span id="kpi-min-delta" style="display:none;"></span>
+          <span id="kpi-max-delta" style="display:none;"></span>
+          <span id="kpi-spread-delta" style="display:none;"></span>
+          <span id="kpi-count-delta" style="display:none;"></span>
+          <span id="meta-routes" style="display:none;"></span>
+          <span id="meta-range" style="display:none;"></span>
+          <span id="meta-airlines" style="display:none;"></span>
+        </div>
+
+        <!-- Right: Destination / Landmark Banner Card -->
+        <div class="card route-banner-card">
+          <div class="banner-image-container">
+            <img id="bannerCityImg" class="banner-city-photo" src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=800&q=80" alt="Destination City Landmark" />
+            <div class="banner-glass-overlay">
+              <div class="banner-route-tag" id="bannerRouteTag">DEL &rarr; BOM</div>
+              <div class="banner-main-caption" id="bannerCityCaption">One of India's busiest routes</div>
+              <div class="banner-sub-caption" id="bannerCitySub">High demand &bull; Multiple daily flights</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs Bar -->
+    <section class="route-tabs-container">
+      <nav class="route-tabs-nav" aria-label="Route analysis views">
+        <button class="tab-btn active" data-tab="trend" id="tabBtnTrend">
+          <span class="tab-indicator-dot">&bull;</span>
+          <span>Fare Trend</span>
+        </button>
+        <button class="tab-btn" data-tab="dist" id="tabBtnDist">
+          <span>Price Distribution</span>
+        </button>
+        <button class="tab-btn" data-tab="window" id="tabBtnWindow">
+          <span>Booking Window Effect</span>
+        </button>
+        <button class="tab-btn" data-tab="airline" id="tabBtnAirline">
+          <span>Airline Comparison</span>
+        </button>
+      </nav>
+    </section>
+
+    <!-- Main Analytics Chart & Key Insights Grid (2 Columns) -->
+    <section class="route-analytics-section" aria-label="Chart and Insights">
+      <div class="route-analytics-grid">
+        <!-- Left: Dynamic Tab Chart Card -->
+        <div class="card tab-chart-card">
+          <div class="chart-card-header">
+            <h3 class="chart-title" id="tabMainHeading">Average Fare Trend</h3>
+            <div class="chart-header-select-wrap" id="trendSelectWrap">
+              <select id="trendTimeRangeSelect" class="clean-dropdown-select" aria-label="Trend Time Range">
+                <option value="12m" selected>Last 12 months</option>
+                <option value="6m">Last 6 months</option>
+                <option value="30d">Last 30 days</option>
+                <option value="all">All travel dates</option>
+              </select>
+              <span class="select-chevron">&#9662;</span>
+            </div>
+            <span class="card__hint" id="trend-hint" style="display:none;"></span>
+          </div>
+
+          <!-- Tab Content Views -->
+          <div class="tab-views-wrapper">
+            <!-- 1. Fare Trend View -->
+            <div class="tab-view-panel active" id="view-trend">
+              <div class="chart-canvas modern-chart-canvas" id="trend-chart" role="img" aria-label="Fare trend chart">
+                <span class="chart-empty">Loading trend data…</span>
+              </div>
+            </div>
+
+            <!-- 2. Price Distribution View -->
+            <div class="tab-view-panel" id="view-dist" style="display:none;">
+              <div class="chart-canvas modern-chart-canvas" id="distribution-chart" role="img" aria-label="Fare distribution chart">
+                <span class="chart-empty">Loading distribution…</span>
+              </div>
+            </div>
+
+            <!-- 3. Booking Window View -->
+            <div class="tab-view-panel" id="view-window" style="display:none;">
+              <div class="bar-list modern-bar-list" id="leadtime-panel">
+                <span class="chart-empty">Loading booking windows…</span>
+              </div>
+            </div>
+
+            <!-- 4. Airline Comparison View -->
+            <div class="tab-view-panel" id="view-airline" style="display:none;">
+              <div class="bar-list modern-bar-list" id="airline-bar-list">
+                <span class="chart-empty">Loading airline comparisons…</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Key Insights Card -->
+        <div class="card route-insights-card">
+          <div class="insights-card-header">
+            <div class="insight-icon-circle">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18h6m-4 3h2M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/>
+              </svg>
+            </div>
+            <h3 class="insights-title">Key Insights</h3>
+          </div>
+
+          <div class="insights-body" id="routeInsightsBody">
+            <div class="insight-point-item">
+              <span class="insight-bullet-dot"></span>
+              <p class="insights-text" id="routeKeyInsightText">
+                Fares on this route are <strong>5.2% higher</strong> than last month, with booking demand peaking in the 15-30 day horizon.
+              </p>
+            </div>
+
+            <div class="insight-point-item">
+              <span class="insight-bullet-dot"></span>
+              <p class="insights-text" id="routeAdvanceInsightText">
+                <strong>Optimal Booking Window:</strong> Purchase <strong>21 to 35 days in advance</strong> to unlock baseline rates (~24% below last-minute surge).
+              </p>
+            </div>
+
+            <div class="insight-point-item">
+              <span class="insight-bullet-dot"></span>
+              <p class="insights-text" id="routeCarrierInsightText">
+                <strong>Carrier Spread:</strong> Low-cost carriers offer inventory from ₹3,899, while peak legacy flights average ₹8,900+.
+              </p>
+            </div>
+
+            <div class="insight-point-item">
+              <span class="insight-bullet-dot"></span>
+              <p class="insights-text" id="routeStatutoryInsightText">
+                <strong>Tariff Intelligence:</strong> Base fare constitutes ~78% of the ticket price, with ATF fuel surcharge and GST/UDF comprising 22%.
+              </p>
+            </div>
+          </div>
+
+          <div class="insights-footer">
+            <a href="#intelligenceSection" class="explore-analysis-link" id="btnExploreAnalysis">
+              <span>Explore detailed analysis</span>
+              <span class="link-arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Deep Route Intelligence & Statutory Cost Structure Section -->
+    <section class="card intelligence-card modern-intelligence-card" id="intelligenceSection">
+      <div class="card__header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(56, 189, 248, 0.12); padding-bottom: 16px;">
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin-bottom: 4px;">Route Intelligence &amp; Cost Breakdown</h3>
+          <span class="card__hint" style="color: #94a3b8; font-size: 0.8rem;">Date-level pricing variance, volatility signals &amp; statutory cost structure</span>
+        </div>
+      </div>
+      <div class="intelligence-body" style="padding-top: 20px;">
+        <!-- Top KPI Stat Metric Cards -->
+        <div class="intel-kpi-grid" id="intel-kpi-grid">
+          <div class="intel-kpi"><span class="chart-empty">Loading insights…</span></div>
+        </div>
+
+        <!-- Donut Chart & Breakdown Table -->
+        <div class="intel-cost-section" id="intel-cost-section">
+          <span class="chart-empty">Loading cost structure…</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Matching Flight Quotes Table Section -->
+    <section class="card flights-card modern-flights-card">
+      <div class="card__header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid rgba(56, 189, 248, 0.12); padding-bottom: 16px;">
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin-bottom: 4px;">All Flights <span class="flights-count" id="flights-count">…</span></h3>
+          <span class="card__hint" style="color: #94a3b8; font-size: 0.8rem;">Every quote matching the selected filters</span>
+        </div>
+        <div class="export-toolbar">
+          <button id="btnExportCsv" class="export-btn" title="Download CSV">&#128229; CSV</button>
+          <button id="btnExportExcel" class="export-btn" title="Download Excel (.xlsx)">&#128202; Excel</button>
+          <button id="btnExportJson" class="export-btn" title="Download JSON">&#128203; JSON</button>
+          <button id="btnExportPdf" class="export-btn" title="Print PDF Summary">&#128424; PDF Print</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table flights-table modern-table">
+          <thead>
+            <tr>
+              <th>Flight</th>
+              <th>Route</th>
+              <th>Travel Date</th>
+              <th>Window</th>
+              <th class="num">Base</th>
+              <th class="num">Taxes</th>
+              <th class="num">UDF</th>
+              <th class="num">Total</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="flights-body">
+            <tr><td colspan="9" class="chart-empty">Loading flights…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination-bar" id="routes-pagination-bar">
+        <div class="pagination-info" id="routes-pagination-info">Showing 0 flights</div>
+        <div class="pagination-controls">
+          <label for="routesPageSize" class="pagination-label">Per page:</label>
+          <select id="routesPageSize" class="pagination-select" aria-label="Page Size">
+            <option value="25" selected>25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <div class="pagination-buttons" id="routes-pagination-buttons">
+            <!-- Dynamic page buttons -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer apix-footer">
+    <div class="footer-inner">
+      <span>&copy; 2026 Airfare Price Index (APIx) &middot; NSO (MoSPI) &amp; RBI Retail Inflation Platform</span>
+      <span>Live scraped data &middot; DGCA Traffic Weighted</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/routes.js"></script>
+</body>
+</html>

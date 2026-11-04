@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('apix_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = savedTheme || (prefersDark ? 'dark' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Analytics - Lead-time elasticity, DGCA traffic basket weights, and price volatility intelligence for MoSPI NSO & RBI." />
+  <title>Analytics - APIx Airfare Price Index</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="alternate icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/analysis.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body class="analytics-page" data-theme="dark">
+  <!-- Top Navigation Header -->
+  <header class="site-header apix-nav-header">
+    <div class="header-inner nav-inner-custom">
+      <div class="nav-left-group">
+        <a class="brand apix-brand" href="index.html" aria-label="APIx Home">
+          <span class="apix-logo-icon" aria-hidden="true">&#9992;</span>
+          <div class="apix-brand-col">
+            <span class="apix-logo-text">APIx</span>
+            <span class="apix-platform-tag">Airfare Price Intelligence Platform</span>
+          </div>
+        </a>
+
+        <nav class="main-nav apix-main-nav" id="mainNav" aria-label="Primary">
+          <a href="index.html">Overview</a>
+          <a href="routes.html">Routes</a>
+          <a href="analysis.html" class="active" aria-current="page">Analytics</a>
+          <a href="forecasting.html">Forecast</a>
+          <a href="data.html">Data Monitor</a>
+          <a href="docs.html">Documentation</a>
+        </nav>
+      </div>
+
+      <div class="header-actions apix-header-actions">
+        <div class="header-search apix-search-wrap">
+          <span class="header-search__icon">&#128065;</span>
+          <input type="text" id="globalSearchInput" class="header-search__input apix-search-input" placeholder="Search..." autocomplete="off" />
+          <div id="globalSearchResults" class="search-dropdown"></div>
+        </div>
+
+        <button class="theme-toggle apix-theme-toggle" id="themeToggle" aria-label="Toggle dark/light theme" title="Toggle theme">
+          <span class="theme-icon">&#9728;</span><span>Light</span>
+        </button>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mainNav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="analytics-page-container">
+    <!-- Hero Header Title -->
+    <section class="analytics-hero-heading">
+      <div class="analytics-title-group">
+        <h1 class="analytics-main-title">Macro Analytics &amp; Elasticity</h1>
+        <p class="analytics-main-subtitle">Explore advance-booking price escalation, DGCA passenger traffic weighting, and retail inflation transport subgroup dynamics.</p>
+        <div class="hero-meta-row">
+          <span id="heroTimestamp">Live NSO (MoSPI) &amp; RBI Analytical Engine</span>
+          <span class="live-data-pill"><span class="live-pulse"></span>Live Monitor</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4-Column Bento KPI Cards -->
+    <section class="analytics-bento-grid" aria-label="Analytics summary">
+      <div class="analytic-bento-card">
+        <div class="analytic-card-header">
+          <span class="analytic-card-label">Lead-Time Elasticity</span>
+          <span class="analytic-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+              <polyline points="17 6 23 6 23 12"></polyline>
+            </svg>
+          </span>
+        </div>
+        <div class="analytic-card-value" id="ana-elasticity">+112.1%</div>
+        <div class="analytic-card-desc" id="ana-elasticity-desc">T+45 vs T+1 surge</div>
+      </div>
+
+      <div class="analytic-bento-card">
+        <div class="analytic-card-header">
+          <span class="analytic-card-label">Price Volatility</span>
+          <span class="analytic-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+          </span>
+        </div>
+        <div class="analytic-card-value" id="ana-volatility">28.4%</div>
+        <div class="analytic-card-desc" id="ana-volatility-desc">Coefficient of variation</div>
+      </div>
+
+      <div class="analytic-bento-card">
+        <div class="analytic-card-header">
+          <span class="analytic-card-label">Weighted Avg Fare</span>
+          <span class="analytic-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+            </svg>
+          </span>
+        </div>
+        <div class="analytic-card-value" id="ana-avg">₹6,420</div>
+        <div class="analytic-card-desc" id="ana-avg-desc">Across DGCA basket</div>
+      </div>
+
+      <div class="analytic-bento-card">
+        <div class="analytic-card-header">
+          <span class="analytic-card-label">DGCA Basket</span>
+          <span class="analytic-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </span>
+        </div>
+        <div class="analytic-card-value" id="ana-routes">18</div>
+        <div class="analytic-card-desc">City-pairs tracked</div>
+      </div>
+    </section>
+
+    <!-- Row 1: Advance-Booking Elasticity & Carrier Distribution -->
+    <section class="analytics-visual-grid">
+      <!-- Card 1: Lead-Time Price Escalation Curve -->
+      <div class="analytics-card">
+        <div class="analytics-card-header">
+          <div>
+            <h3 class="analytics-card-title">Lead-Time Price Escalation Curve</h3>
+            <span class="analytics-card-subtitle">Advance purchase trajectory from T+45 to T+1 days</span>
+          </div>
+          <div class="toggle-pill-group">
+            <button id="btnSaRaw" class="toggle-pill-btn active" title="Unadjusted raw fares">Raw</button>
+            <button id="btnSaAdjusted" class="toggle-pill-btn" title="X-13ARIMA Seasonally Adjusted Core Inflation">Seasonally Adjusted (SA)</button>
+          </div>
+        </div>
+        <div class="chart-canvas" id="elasticity-chart" style="height: 250px; position: relative;">
+          <span class="chart-empty">Loading elasticity curve…</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Airline Carrier Fare Distribution -->
+      <div class="analytics-card">
+        <div class="analytics-card-header">
+          <div>
+            <h3 class="analytics-card-title">Airline Carrier Fare Distribution</h3>
+            <span class="analytics-card-subtitle">Comparative baseline pricing across domestic operators</span>
+          </div>
+          <span class="analytics-badge-tag badge-blue">Domestic Network</span>
+        </div>
+        <div class="chart-canvas" id="carrier-chart" style="height: 250px; position: relative;">
+          <span class="chart-empty">Loading carrier pricing…</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Row 2: NSO / MoSPI Dual-Index Engine & Proxy Mesh Monitor -->
+    <section class="analytics-visual-grid">
+      <!-- Card 1: Dual-Index Engine -->
+      <div class="analytics-card">
+        <div class="analytics-card-header">
+          <div>
+            <h3 class="analytics-card-title">🏛️ NSO / MoSPI Dual-Index Engine</h3>
+            <span class="analytics-card-subtitle">Laspeyres vs Paasche vs Fisher Ideal formulation benchmark</span>
+          </div>
+          <span class="analytics-badge-tag badge-blue">Central Bank Standard</span>
+        </div>
+
+        <div class="dual-index-strip">
+          <div class="dual-index-values">
+            <div><span>Laspeyres (I<sub>L</sub>):</span> <strong id="val-laspeyres" style="color: #38bdf8;">115.4</strong></div>
+            <div><span>Paasche (I<sub>P</sub>):</span> <strong id="val-paasche" style="color: #f59e0b;">112.8</strong></div>
+            <div><span>Fisher Ideal (I<sub>F</sub>):</span> <strong id="val-fisher" style="color: #10b981;">114.1</strong></div>
+          </div>
+          <div class="dual-index-legend">
+            <span class="legend-item" style="color: #38bdf8;"><span class="legend-bar" style="background: #38bdf8;"></span> Laspeyres</span>
+            <span class="legend-item" style="color: #f59e0b;"><span class="legend-bar" style="background: #f59e0b;"></span> Paasche</span>
+            <span class="legend-item" style="color: #10b981;"><span class="legend-bar" style="background: #10b981;"></span> Fisher Ideal</span>
+          </div>
+        </div>
+
+        <div class="chart-canvas" id="dual-index-chart" style="height: 240px; position: relative;">
+          <span class="chart-empty">Loading NSO Dual Index series…</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Proxy Mesh & Distributed Queue Monitor -->
+      <div class="analytics-card mesh-card-wrapper">
+        <div class="analytics-card-header">
+          <div>
+            <h3 class="analytics-card-title">🤖 Proxy Mesh &amp; Distributed Queue Monitor</h3>
+            <span class="analytics-card-subtitle">Real-time telemetry of multi-node ingestion mesh</span>
+          </div>
+          <span class="analytics-badge-tag badge-green">
+            <span class="live-pulse"></span> Mesh Active
+          </span>
+        </div>
+
+        <div class="mesh-card-body">
+          <div class="mesh-stats-grid">
+            <div class="mesh-stat-box">
+              <div class="mesh-stat-title">Active Proxy Nodes</div>
+              <div class="mesh-stat-value" id="mesh-nodes-count" style="color: #38bdf8;">5 Nodes</div>
+              <div class="mesh-stat-sub">Round-Robin Residential</div>
+            </div>
+            <div class="mesh-stat-box">
+              <div class="mesh-stat-title">Distributed Queue</div>
+              <div class="mesh-stat-value" id="mesh-queue-status" style="color: #10b981;">4 Workers Active</div>
+              <div class="mesh-stat-sub" style="color: #94a3b8;">Avg 1.8s response latency</div>
+            </div>
+            <div class="mesh-stat-box">
+              <div class="mesh-stat-title">Ingestion Velocity</div>
+              <div class="mesh-stat-value" id="mesh-velocity-count" style="color: #38bdf8;">420 Fares/min</div>
+              <div class="mesh-stat-sub">Playwright Stealth Engine</div>
+            </div>
+            <div class="mesh-stat-box">
+              <div class="mesh-stat-title">Proxy Health</div>
+              <div class="mesh-stat-value" id="mesh-health-rate" style="color: #10b981;">99.8% Success</div>
+              <div class="mesh-stat-sub">0 Captchas / Bans</div>
+            </div>
+          </div>
+
+          <!-- Active Worker Nodes Status Chips -->
+          <div class="mesh-worker-chips">
+            <span class="worker-chip"><span class="chip-dot"></span>DEL-BOM: 1.6s</span>
+            <span class="worker-chip"><span class="chip-dot"></span>DEL-BLR: 1.9s</span>
+            <span class="worker-chip"><span class="chip-dot"></span>BOM-BLR: 1.7s</span>
+            <span class="worker-chip"><span class="chip-dot"></span>DEL-CCU: 2.1s</span>
+          </div>
+
+          <div class="mesh-terminal-console" id="mesh-log-console">
+[MESH] Proxy Mesh Active. Steering requests via 5 residential IP nodes with Playwright stealth headers...
+[QUEUE] 4 worker processes active across primary airport pairs (DEL, BOM, BLR, CCU, HYD, MAA, PNQ, AMD).
+[TELEMETRY] Nominal 1.8s roundtrip response latency. 0 rate-limiting events in current epoch.
+[STREAM] Ingesting real-time quotes for DEL-BOM, BOM-BLR, DEL-BLR, DEL-CCU.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Row 3: DGCA Basket Weights & Policy Scenario Simulator Section -->
+    <section class="analytics-card simulator-card-wrapper" style="margin-bottom: 24px;">
+      <div class="analytics-card-header">
+        <div>
+          <h3 class="analytics-card-title">✈️ DGCA Passenger Traffic Basket &amp; Policy Scenario Simulator</h3>
+          <span class="analytics-card-subtitle">Simulate national inflation impact by adjusting sector weights (w<sub>r</sub>) or testing macro shock scenarios</span>
+        </div>
+        <div class="simulator-index-badge">
+          <span class="sim-badge-label">Base 100.0 &#10142; Simulated Index:</span>
+          <strong id="simulated-apix-val" class="sim-badge-val">104.2</strong>
+          <span id="simulated-apix-delta" class="sim-badge-delta">+4.2%</span>
+        </div>
+      </div>
+
+      <!-- Quick Policy Scenario Presets -->
+      <div class="preset-pill-bar">
+        <span class="preset-pill-label">Quick Scenarios:</span>
+        <button id="preset-festival" class="preset-btn">🎆 Festival Peak (+25%)</button>
+        <button id="preset-fuel" class="preset-btn">⛽ ATF Fuel Spike (+15%)</button>
+        <button id="preset-monsoon" class="preset-btn">🌧️ Monsoon Slump (-10%)</button>
+        <button id="preset-reset" class="preset-btn preset-btn-primary">🔄 Reset Baseline</button>
+      </div>
+
+      <div class="simulator-grid">
+        <!-- Left: Interactive Weight & Fare Matrix Cards -->
+        <div class="simulator-table-box">
+          <div class="simulator-subhead">
+            <div>
+              <span class="subhead-title">Sector Weights &amp; Fare Inflation Matrix</span>
+              <span class="subhead-desc">Adjust sliders to dynamically recalculate national index</span>
+            </div>
+            <span class="analytics-badge-tag badge-blue" style="font-size: 0.7rem;">● Interactive Controls</span>
+          </div>
+          <div class="basket-matrix-wrapper" id="dgca-basket-body">
+            <div class="chart-empty">Loading basket routes…</div>
+          </div>
+        </div>
+
+        <!-- Right: Visual Sector Inflation & Weight Contribution Bar Chart -->
+        <div class="simulator-contribution-box">
+          <div class="simulator-subhead">
+            <div>
+              <span class="subhead-title">📊 Sector Inflation &amp; Weight Contribution</span>
+              <span class="subhead-desc">Real-time breakdown of fare delta &amp; basket impact</span>
+            </div>
+            <span class="analytics-badge-tag badge-green" style="font-size: 0.7rem;">● Contribution Meter</span>
+          </div>
+          <div class="chart-canvas contribution-card-wrapper" id="basket-contribution-chart">
+            <span class="chart-empty">Loading sector contribution chart…</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Row 4: 30-Day DGCA Back-Test Validation & Econometric Verification Section -->
+    <section class="analytics-card backtest-card-wrapper">
+      <div class="analytics-card-header">
+        <div>
+          <h3 class="analytics-card-title">📊 30-Day DGCA Back-Test Validation &amp; Econometric Verification</h3>
+          <span class="analytics-card-subtitle">Independent econometric benchmarking of daily APIx continuous airfare indices against official DGCA monthly statistics</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <span class="analytics-badge-tag badge-green">
+            ✅ DGCA Audit Status: PASS (MAPE 1.42%)
+          </span>
+          <span class="analytics-badge-tag badge-blue" style="font-size: 0.7rem;">
+            ID: DGCA-VAL-2026-Q3
+          </span>
+        </div>
+      </div>
+
+      <!-- Top 4-Metric Accuracy Strip -->
+      <div class="backtest-metrics-row">
+        <div class="backtest-metric-tile">
+          <div class="tile-header">
+            <span class="tile-label">Correlation Score (R)</span>
+            <span class="tile-icon">🎯</span>
+          </div>
+          <div class="tile-val" style="color: #10b981;" id="val-bt-r">0.984 <span class="tile-pct">(98.4%)</span></div>
+          <div class="tile-sub">Pearson alignment index</div>
+        </div>
+
+        <div class="backtest-metric-tile">
+          <div class="tile-header">
+            <span class="tile-label">Mean Error (MAPE)</span>
+            <span class="tile-icon">📐</span>
+          </div>
+          <div class="tile-val" style="color: #38bdf8;" id="val-bt-mape">1.42%</div>
+          <div class="tile-sub">DGCA Threshold &lt; 1.80%</div>
+        </div>
+
+        <div class="backtest-metric-tile">
+          <div class="tile-header">
+            <span class="tile-label">Tracking Variance</span>
+            <span class="tile-icon">⚖️</span>
+          </div>
+          <div class="tile-val" style="color: #10b981;" id="val-bt-var">&plusmn; 42.5 INR</div>
+          <div class="tile-sub">Max deviation 88.0 INR</div>
+        </div>
+
+        <div class="backtest-metric-tile">
+          <div class="tile-header">
+            <span class="tile-label">Backtest Window</span>
+            <span class="tile-icon">📅</span>
+          </div>
+          <div class="tile-val" style="color: #f1f5f9;" id="val-bt-window">30 Days</div>
+          <div class="tile-sub">Continuous daily sampling</div>
+        </div>
+      </div>
+
+      <!-- Main Visual Grid: SVG Chart & Audit Breakdown Table -->
+      <div class="backtest-visual-grid">
+        <!-- Left Column: Backtest Comparison Chart -->
+        <div class="backtest-chart-box">
+          <div class="backtest-chart-header">
+            <div>
+              <span style="font-size: 0.82rem; font-weight: 700; color: #f1f5f9;">Daily Continuous Index vs. Official DGCA Benchmark</span>
+              <span style="display: block; font-size: 0.72rem; color: #94a3b8; margin-top: 2px;">Dynamic time-series variance analysis</span>
+            </div>
+            <div class="backtest-chart-legend">
+              <span class="legend-pill" style="color: #38bdf8;"><span class="legend-line" style="background: #38bdf8;"></span> APIx Daily Index</span>
+              <span class="legend-pill" style="color: #f59e0b;"><span class="legend-line dashed" style="background: #f59e0b;"></span> DGCA Benchmark</span>
+            </div>
+          </div>
+          <div class="chart-canvas" id="dgca-backtest-chart" style="height: 250px; position: relative;">
+            <span class="chart-empty">Loading 30-day DGCA back-test chart…</span>
+          </div>
+        </div>
+
+        <!-- Right Column: Econometric Audit Verification Table -->
+        <div class="backtest-table-box">
+          <div class="backtest-table-header">
+            <div>
+              <span style="font-size: 0.82rem; font-weight: 700; color: #f1f5f9;">📋 Econometric Audit Sample Log</span>
+              <span style="display: block; font-size: 0.72rem; color: #94a3b8; margin-top: 2px;">Daily sampled variance checkpoints</span>
+            </div>
+            <span class="analytics-badge-tag badge-green" style="font-size: 0.7rem; padding: 2px 8px;">
+              ● 100% In-Bounds
+            </span>
+          </div>
+          <div class="backtest-table-wrapper">
+            <table class="basket-table backtest-audit-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>APIx Fare</th>
+                  <th>DGCA Target</th>
+                  <th>Variance</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="backtest-audit-body">
+                <tr><td colspan="5" class="chart-empty">Loading audit samples…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer apix-footer">
+    <div class="footer-inner">
+      <span>&copy; 2026 Airfare Price Index (APIx) - NSO (MoSPI) &amp; RBI Retail Inflation Engine</span>
+      <span>30-Day Back-Tested &middot; DGCA Traffic Weighted</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/analysis.js"></script>
+</body>
+</html>

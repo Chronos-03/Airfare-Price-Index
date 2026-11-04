@@ -1,0 +1,39 @@
+{
+  "name": "airfare-index",
+  "version": "1.0.0",
+  "description": "Airfare Price Index - unified web app (vanilla frontend + Express API + flight-fare scraper + MongoDB)",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js",
+    "seed": "node backend/scripts/seedConfig.js",
+    "scrape": "python -m backend.scraper_python",
+    "scrape:example": "python -m backend.scraper_python --origin DEL --destination BOM --date 2026-09-15 --source example",
+    "scrape:akasa": "python -m backend.scraper_python --origin DEL --destination BOM --date 2026-09-01 --source akasa",
+    "scrape:network": "python -m backend.scraper_python network --days 1",
+    "scrape:dgca": "python -m backend.scraper_python dgca",
+    "test": "node --test"
+  },
+  "keywords": [
+    "airfare",
+    "index",
+    "flights",
+    "fares",
+    "scraper",
+    "express",
+    "mongodb",
+    "mongoose"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1",
+    "pdf-parse": "^1.1.1",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

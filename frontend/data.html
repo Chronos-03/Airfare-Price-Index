@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('apix_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = savedTheme || (prefersDark ? 'dark' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Data Monitor - Observe web scraping data quality, outlier detection, deduplication, and raw quote feeds." />
+  <title>Data Monitor - APIx Airfare Price Index</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="alternate icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/data.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body class="data-page" data-theme="dark">
+  <!-- Top Navigation Header -->
+  <header class="site-header apix-nav-header">
+    <div class="header-inner nav-inner-custom">
+      <div class="nav-left-group">
+        <a class="brand apix-brand" href="index.html" aria-label="APIx Home">
+          <span class="apix-logo-icon" aria-hidden="true">&#9992;</span>
+          <div class="apix-brand-col">
+            <span class="apix-logo-text">APIx</span>
+            <span class="apix-platform-tag">Airfare Price Intelligence Platform</span>
+          </div>
+        </a>
+
+        <nav class="main-nav apix-main-nav" id="mainNav" aria-label="Primary">
+          <a href="index.html">Overview</a>
+          <a href="routes.html">Routes</a>
+          <a href="analysis.html">Analytics</a>
+          <a href="forecasting.html">Forecast</a>
+          <a href="data.html" class="active" aria-current="page">Data Monitor</a>
+          <a href="docs.html">Documentation</a>
+        </nav>
+      </div>
+
+      <div class="header-actions apix-header-actions">
+        <div class="header-search apix-search-wrap">
+          <span class="header-search__icon">&#128065;</span>
+          <input type="text" id="globalSearchInput" class="header-search__input apix-search-input" placeholder="Search..." autocomplete="off" />
+          <div id="globalSearchResults" class="search-dropdown"></div>
+        </div>
+
+        <button class="theme-toggle apix-theme-toggle" id="themeToggle" aria-label="Toggle dark/light theme" title="Toggle theme">
+          <span class="theme-icon">&#9728;</span><span>Light</span>
+        </button>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mainNav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="data-page-container">
+    <!-- Hero Header Title -->
+    <section class="data-hero-heading">
+      <div class="data-title-group">
+        <h1 class="data-main-title">Data Pipeline Quality &amp; Feed Monitor</h1>
+        <p class="data-main-subtitle">
+          Observe real-time web-scraping extraction quality, deduplication, outlier flagging, and raw quote component splits.
+        </p>
+        <div class="hero-meta-row">
+          <span class="live-data-pill"><span class="live-pulse"></span>Scraper Stream Active</span>
+          <span class="data-meta-pill">4 Live Airline Adapters</span>
+          <span class="data-meta-pill">NSO MoSPI Compliance</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4-Column Bento KPI Cards -->
+    <section class="data-bento-grid" aria-label="Data quality indicators">
+      <div class="data-bento-card">
+        <div class="bento-card-header">
+          <span class="bento-card-label">Total Extracted Quotes</span>
+          <span class="bento-card-icon icon-blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+          </span>
+        </div>
+        <div class="bento-card-value" id="kpi-total-value">22,042</div>
+        <div class="bento-card-subtext">Cumulative Raw Data Lake</div>
+      </div>
+
+      <div class="data-bento-card">
+        <div class="bento-card-header">
+          <span class="bento-card-label">Valid Normalized Quotes</span>
+          <span class="bento-card-icon icon-green">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </span>
+        </div>
+        <div class="bento-card-value" id="kpi-valid-value" style="color: #10b981;">21,727</div>
+        <div class="bento-card-subtext">Clean Index Feed Quotes</div>
+      </div>
+
+      <div class="data-bento-card">
+        <div class="bento-card-header">
+          <span class="bento-card-label">Outliers Flagged &amp; Filtered</span>
+          <span class="bento-card-icon icon-amber">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          </span>
+        </div>
+        <div class="bento-card-value" id="kpi-outlier-value" style="color: #f59e0b;">315</div>
+        <div class="bento-card-subtext">3-Sigma Anomaly Isolation</div>
+      </div>
+
+      <div class="data-bento-card">
+        <div class="bento-card-header">
+          <span class="bento-card-label">Data Quality &amp; Deduplication</span>
+          <span class="bento-card-icon icon-indigo">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+            </svg>
+          </span>
+        </div>
+        <div class="bento-card-value" id="kpi-missing-value" style="color: #38bdf8;">98.6%</div>
+        <div class="bento-card-subtext">Zero Duplicate Records</div>
+      </div>
+    </section>
+
+    <!-- Automated Scraper Cron Schedule Card -->
+    <section class="data-card">
+      <div class="data-card-header">
+        <div>
+          <h2 class="data-card-title">
+            <span>⏰</span> <span>Automated Scraper Cron Scheduler &amp; Job Dispatcher</span>
+          </h2>
+          <span class="data-card-subtitle">Configure automated background extraction intervals &amp; inspect execution audit logs</span>
+        </div>
+        <div>
+          <span id="cron-status-badge" class="data-badge-tag data-badge-tag--green">🟢 Cron Active: Daily 06:00 AM IST</span>
+        </div>
+      </div>
+
+      <div class="cron-control-grid">
+        <div class="param-field">
+          <label class="param-label">Extraction Frequency Schedule</label>
+          <select id="cronFrequencySelect" class="param-select">
+            <option value="daily" selected>⏰ Daily at 06:00 AM IST (Recommended)</option>
+            <option value="every_12h">⏰ Every 12 Hours (Twice Daily)</option>
+            <option value="every_6h">⏰ Every 6 Hours (High Frequency)</option>
+            <option value="disabled">🚫 Disabled (Manual Execution Only)</option>
+          </select>
+        </div>
+
+        <div>
+          <button id="btnSaveCronSchedule" class="btn-scrape-trigger">
+            <span>💾</span> <span>Save Cron Schedule</span>
+          </button>
+        </div>
+
+        <div>
+          <button id="btnFetchCronLogs" class="btn-secondary-action">
+            <span>📋</span> <span>Refresh Cron Logs</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="cron-log-history" class="cron-log-box">
+        [CRON LOG] Active Schedule: Daily at 06:00 AM IST. Last run: 2026-09-06 06:00 IST (96 quotes extracted successfully). Next run: 2026-09-07 06:00 IST.
+      </div>
+    </section>
+
+    <!-- Per-Carrier Scraper Health & Control Grid -->
+    <section class="data-card">
+      <div class="data-card-header">
+        <div>
+          <h2 class="data-card-title">
+            <span>⚡</span> <span>Live Scraper Adapter Health &amp; Control Grid</span>
+          </h2>
+          <span class="data-card-subtitle">Real-time Playwright &amp; REST IBE scraping adapters with 1-click execution</span>
+        </div>
+      </div>
+
+      <div class="scraper-grid">
+        <div class="scraper-card">
+          <div>
+            <div class="scraper-card__head">
+              <span class="scraper-card__title">✈️ Air India</span>
+              <span class="scraper-card__badge">🟢 99.8% Online</span>
+            </div>
+            <div class="scraper-card__meta">
+              <div class="scraper-card__meta-item"><span>Engine:</span> <strong>Playwright Stream</strong></div>
+              <div class="scraper-card__meta-item"><span>Avg Latency:</span> <strong>3.2s</strong></div>
+            </div>
+          </div>
+          <button id="btnRunAirIndiaScrape" class="btn-scrape-trigger">▶ Trigger Scrape</button>
+        </div>
+
+        <div class="scraper-card">
+          <div>
+            <div class="scraper-card__head">
+              <span class="scraper-card__title">✈️ IndiGo</span>
+              <span class="scraper-card__badge">🟢 100% Healthy</span>
+            </div>
+            <div class="scraper-card__meta">
+              <div class="scraper-card__meta-item"><span>Engine:</span> <strong>Network Intercept API</strong></div>
+              <div class="scraper-card__meta-item"><span>Avg Latency:</span> <strong>2.5s</strong></div>
+            </div>
+          </div>
+          <button id="btnRunIndigoScrape" class="btn-scrape-trigger">▶ Trigger Scrape</button>
+        </div>
+
+        <div class="scraper-card">
+          <div>
+            <div class="scraper-card__head">
+              <span class="scraper-card__title">✈️ Akasa Air</span>
+              <span class="scraper-card__badge">⚡ 100% Healthy</span>
+            </div>
+            <div class="scraper-card__meta">
+              <div class="scraper-card__meta-item"><span>Engine:</span> <strong>Direct REST IBE</strong></div>
+              <div class="scraper-card__meta-item"><span>Avg Latency:</span> <strong>1.8s</strong></div>
+            </div>
+          </div>
+          <button id="btnRunAkasaScrape" class="btn-scrape-trigger">▶ Trigger Scrape</button>
+        </div>
+
+        <div class="scraper-card">
+          <div>
+            <div class="scraper-card__head">
+              <span class="scraper-card__title">✈️ SpiceJet</span>
+              <span class="scraper-card__badge">🟢 99.5% Online</span>
+            </div>
+            <div class="scraper-card__meta">
+              <div class="scraper-card__meta-item"><span>Engine:</span> <strong>Headless Stream</strong></div>
+              <div class="scraper-card__meta-item"><span>Avg Latency:</span> <strong>3.1s</strong></div>
+            </div>
+          </div>
+          <button id="btnRunSpicejetScrape" class="btn-scrape-trigger">▶ Trigger Scrape</button>
+        </div>
+      </div>
+
+      <!-- Interactive Scrape Job Filter & Config Panel -->
+      <div class="param-config-panel">
+        <div class="param-config-header">
+          <span>🎛️ Configure Date-Wise Scraper Parameters</span>
+          <span style="font-size: 0.74rem; color: #38bdf8; font-weight: 700;">30-Day Master Live Extraction Mode</span>
+        </div>
+        <div class="param-grid">
+          <div class="param-field">
+            <label class="param-label">Route / Sector Pair</label>
+            <select id="scrapeRouteSelect" class="param-select">
+              <option value="ALL">ALL (All DGCA Sectors &amp; Regional Networks)</option>
+              <option value="DEL-BOM" selected>DEL ➔ BOM (Delhi to Mumbai)</option>
+              <option value="BOM-DEL">BOM ➔ DEL (Mumbai to Delhi)</option>
+              <option value="DEL-BLR">DEL ➔ BLR (Delhi to Bengaluru)</option>
+              <option value="BLR-DEL">BLR ➔ DEL (Bengaluru to Delhi)</option>
+              <option value="DEL-CCU">DEL ➔ CCU (Delhi to Kolkata)</option>
+              <option value="BOM-BLR">BOM ➔ BLR (Mumbai to Bengaluru)</option>
+              <option value="HYD-DEL">HYD ➔ DEL (Hyderabad to Delhi)</option>
+              <option value="MAA-DEL">MAA ➔ DEL (Chennai to Delhi)</option>
+              <option value="DEL-GOI">DEL ➔ GOI (Delhi to Goa)</option>
+              <option value="BOM-PNQ">BOM ➔ PNQ (Mumbai to Pune)</option>
+              <option value="DEL-AMD">DEL ➔ AMD (Delhi to Ahmedabad)</option>
+              <option value="BLR-COK">BLR ➔ COK (Bengaluru to Kochi)</option>
+              <option value="DEL-BBI">DEL ➔ BBI (Delhi to Bhubaneswar)</option>
+              <option value="BLR-CCJ">BLR ➔ CCJ (Bengaluru to Calicut)</option>
+              <option value="DEL-TRV">DEL ➔ TRV (Delhi to Trivandrum)</option>
+              <option value="DEL-JAI">DEL ➔ JAI (Delhi to Jaipur)</option>
+              <option value="DEL-LKO">DEL ➔ LKO (Delhi to Lucknow)</option>
+              <option value="DEL-GAU">DEL ➔ GAU (Delhi to Guwahati)</option>
+            </select>
+          </div>
+
+          <div class="param-field">
+            <label class="param-label">Scrape Date Range / Window</label>
+            <select id="scrapeWindowSelect" class="param-select">
+              <option value="15" selected>📅 Advance Booking Window (Up to T+15 Days)</option>
+              <option value="7">📅 Short Window (Up to T+7 Days)</option>
+              <option value="1">📅 1-Day Window (T+15 Only)</option>
+            </select>
+          </div>
+
+          <div class="param-field">
+            <label class="param-label">Airline Carrier Filter</label>
+            <select id="scrapeCarrierSelect" class="param-select">
+              <option value="ALL" selected>✈️ All Registered Carriers</option>
+              <option value="Air India">Air India</option>
+              <option value="IndiGo">IndiGo</option>
+              <option value="Akasa Air">Akasa Air</option>
+              <option value="SpiceJet">SpiceJet</option>
+            </select>
+          </div>
+
+          <div>
+            <button id="btnRunMasterDateScrape" class="btn-scrape-trigger btn-scrape-trigger--green">
+              <span>▶</span> <span>Run Date-Wise Master Scrape</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Styled Terminal Console -->
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <span class="terminal-dot" style="background:#ef4444;"></span>
+          <span class="terminal-dot" style="background:#f59e0b;"></span>
+          <span class="terminal-dot" style="background:#10b981;"></span>
+          <span style="font-size:0.75rem; color:#94a3b8; font-weight:600; margin-left:6px;">live_scraper_stream.log (SSE Active)</span>
+        </div>
+        <div id="scrape-terminal-log" class="terminal-body">[SYSTEM] Scraper Monitor Active. Listening for live quote stream and manual job triggers...</div>
+      </div>
+    </section>
+
+    <!-- Recent Raw Quotes & Component Breakdown Card -->
+    <section class="data-card">
+      <div class="data-card-header">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <h2 class="data-card-title">
+            <span>📋</span> <span>Recent Raw Quotes &amp; Component Breakdown</span>
+          </h2>
+          <span class="data-badge-tag">Live Feed &amp; DB Archive</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <button id="btnExportDataCsv" class="btn-export-csv" title="Download complete raw flight fares dataset CSV">
+            <span>📥</span> <span>Export CSV Dataset</span>
+          </button>
+          <div class="feed-tab-group">
+            <button class="feed-tab-btn active" data-tab="all">🌐 All Quotes</button>
+            <button class="feed-tab-btn" data-tab="live">⚡ Live Feed (SSE)</button>
+            <button class="feed-tab-btn" data-tab="scraped">🤖 Manually Scraped</button>
+            <button class="feed-tab-btn" data-tab="surge">🚨 Surge Fares</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-table-wrapper">
+        <table class="quotes-data-table">
+          <thead>
+            <tr>
+              <th scope="col">Route</th>
+              <th scope="col">Carrier / Flight</th>
+              <th scope="col">Travel Date</th>
+              <th scope="col">Window</th>
+              <th scope="col" class="num">Base Fare</th>
+              <th scope="col" class="num">Taxes</th>
+              <th scope="col" class="num">UDF</th>
+              <th scope="col" class="num">Total Fare</th>
+              <th scope="col">Quality</th>
+              <th scope="col">Receipt</th>
+            </tr>
+          </thead>
+          <tbody id="recent-quotes-body">
+            <tr><td colspan="10" style="text-align: center; color: var(--color-text-muted, #64748b); padding: 24px;">Loading live quotes feed…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="data-pagination-bar" id="data-pagination-bar">
+        <div class="data-pagination-info" id="data-pagination-info">Showing 0 quotes</div>
+        <div class="data-pagination-controls">
+          <label for="dataPageSize" class="data-pagination-label">Per page:</label>
+          <select id="dataPageSize" class="data-pagination-select" aria-label="Page Size">
+            <option value="15" selected>15</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+          </select>
+          <div class="data-pagination-buttons" id="data-pagination-buttons">
+            <!-- Dynamic page buttons -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Feature 2: Fare Component Separator Receipt Breakdown Modal -->
+  <div class="receipt-modal-overlay" id="fareReceiptModal" style="display: none;">
+    <div class="receipt-modal">
+      <div class="receipt-modal-header">
+        <h3 class="receipt-modal-title">🧾 Itemized Fare Component Receipt</h3>
+        <button class="receipt-modal-close" id="btnCloseReceiptModal">&times;</button>
+      </div>
+      <div class="receipt-modal-body" id="receiptModalBody">
+        <!-- Filled dynamically by JS -->
+      </div>
+      <div class="receipt-modal-footer">
+        <button class="btn-scrape-trigger" id="btnDismissReceiptModal" style="width: auto; padding: 7px 18px;">Close Inspector</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>&copy; 2026 Airfare Price Index (APIx) - NSO (MoSPI) &amp; RBI Retail Inflation Engine</span>
+      <span>30-Day Back-Tested &middot; DGCA Traffic Weighted</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/data.js"></script>
+</body>
+</html>

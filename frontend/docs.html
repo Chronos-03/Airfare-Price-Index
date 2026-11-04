@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('apix_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = savedTheme || (prefersDark ? 'dark' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Technical Documentation - Real-time Airfare Price Index (APIx) platform for NSO (MoSPI) & RBI." />
+  <title>Documentation - APIx Airfare Price Index</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="alternate icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/docs.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <!-- KaTeX Math Rendering Library -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="if (window.renderMathInElement) { renderMathInElement(document.body, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}, {left: '$', right: '$', display: false}], throwOnError: false }); }"></script>
+</head>
+<body class="docs-page" data-theme="dark">
+  <!-- Top Navigation Header -->
+  <header class="site-header apix-nav-header">
+    <div class="header-inner nav-inner-custom">
+      <div class="nav-left-group">
+        <a class="brand apix-brand" href="index.html" aria-label="APIx Home">
+          <span class="apix-logo-icon" aria-hidden="true">&#9992;</span>
+          <div class="apix-brand-col">
+            <span class="apix-logo-text">APIx</span>
+            <span class="apix-platform-tag">Airfare Price Intelligence Platform</span>
+          </div>
+        </a>
+
+        <nav class="main-nav apix-main-nav" id="mainNav" aria-label="Primary">
+          <a href="index.html">Overview</a>
+          <a href="routes.html">Routes</a>
+          <a href="analysis.html">Analytics</a>
+          <a href="forecasting.html">Forecast</a>
+          <a href="data.html">Data Monitor</a>
+          <a href="docs.html" class="active" aria-current="page">Documentation</a>
+        </nav>
+      </div>
+
+      <div class="header-actions apix-header-actions">
+        <div class="header-search apix-search-wrap">
+          <span class="header-search__icon">&#128065;</span>
+          <input type="text" id="globalSearchInput" class="header-search__input apix-search-input" placeholder="Search..." autocomplete="off" />
+          <div id="globalSearchResults" class="search-dropdown"></div>
+        </div>
+
+        <button class="theme-toggle apix-theme-toggle" id="themeToggle" aria-label="Toggle dark/light theme" title="Toggle theme">
+          <span class="theme-icon">&#9728;</span><span>Light</span>
+        </button>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mainNav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="docs-page-container">
+    <!-- Hero Banner Header -->
+    <div class="docs-hero">
+      <h1 class="docs-hero__title">Technical Documentation &amp; API Guide</h1>
+      <p class="docs-hero__subtitle">Comprehensive technical reference for NSO (MoSPI) &amp; RBI retail inflation engines, NSO Laspeyres / Paasche / Fisher dual-index formulas, STL seasonal adjustment filters, proxy mesh queue, DGCA policy simulators, MongoDB Atlas schemas, and REST APIs.</p>
+      <div class="docs-hero__actions">
+        <a href="#api" class="docs-hero__btn docs-hero__btn--primary">&#128065; Test REST API Console</a>
+        <a href="#cli" class="docs-hero__btn docs-hero__btn--secondary">&#128187; CLI Scraper Commands</a>
+        <a href="#apix" class="docs-hero__btn docs-hero__btn--secondary">&#129408; Dual-Index Formulas</a>
+      </div>
+    </div>
+
+    <div class="docs-layout">
+      <!-- Sidebar Navigation -->
+      <aside class="docs-sidebar">
+        <div class="docs-nav__header">
+          <div class="docs-nav__title">Documentation Menu</div>
+          <span class="docs-nav__count">8 Sections</span>
+        </div>
+        <ul class="docs-nav__list">
+          <li class="docs-nav__item">
+            <a href="#arch" class="active">
+              <span class="nav-icon">&#127963;</span>
+              <span>1. System Architecture</span>
+            </a>
+          </li>
+          <li class="docs-nav__item">
+            <a href="#scrapers">
+              <span class="nav-icon">&#9889;</span>
+              <span>2. Scrapers &amp; Proxy Mesh</span>
+            </a>
+          </li>
+          <li class="docs-nav__item">
+            <a href="#api">
+              <span class="nav-icon">&#128065;</span>
+              <span>3. REST API &amp; Console</span>
+            </a>
+          </li>
+          <li class="docs-nav__item">
+            <a href="#apix">
+              <span class="nav-icon">&#129408;</span>
+              <span>4. Dual-Index &amp; Macro Engines</span>
+            </a>
+          </li>
+          <li class="docs-nav__item">
+            <a href="#arima-guide">
+              <span class="nav-icon">&#129302;</span>
+              <span>5. ARIMA Machine Learning Model</span>
+            </a>
+          </li>
+          <li class="docs-nav__item">
+            <a href="#simulator">
+              <span class="nav-icon">&#128200;</span>
+              <span>6. DGCA Policy Simulator</span>
+            </a>
+          </li>
+          <li class="docs-nav__item">
+            <a href="#schema">
+              <span class="nav-icon">&#128451;</span>
+              <span>7. MongoDB Atlas Schema</span>
+            </a>
+          </li>
+          <li class="docs-nav__item">
+            <a href="#cli">
+              <span class="nav-icon">&#128187;</span>
+              <span>8. CLI Scraper Commands</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="docs-sidebar__footer">
+          <div class="docs-sidebar__status">
+            <span class="docs-sidebar__dot"></span>
+            <span>MongoDB Atlas: Connected</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Documentation Content -->
+      <div class="docs-content">
+        
+        <!-- Section 1: System Architecture -->
+        <section id="arch" class="docs-section">
+          <div class="docs-section__header">
+            <h2 class="docs-section__title">
+              <span class="sec-num">1</span>
+              <span>System Architecture &amp; Policy Context</span>
+            </h2>
+            <span class="docs-badge">Flexible Inflation Targeting</span>
+          </div>
+          <p>
+            The <strong>Airfare Price Index (APIx) Platform</strong> addresses a critical gap in India's official Consumer Price Index (CPI) retail inflation monitoring. Traditionally, the National Statistical Office (NSO, MoSPI) collected 'Transport and Communication' airfare prices through manual physical surveys at ticketing offices.
+          </p>
+          <p>
+            With <strong>over 90% of domestic air tickets in India sold online</strong> through airline websites and OTAs, manual collection misses time-sensitive dynamic pricing algorithms. This platform automates live scraping across major Indian carriers (Air India, IndiGo, Akasa Air, SpiceJet, Air India Express) to compute daily NSO/MoSPI &amp; RBI CPI inflation sub-indices.
+          </p>
+          
+          <div class="callout-box">
+            <div class="callout-box__title">&#128161; Key Platform Architectural Highlights</div>
+            <ul>
+              <li><strong>Zero Mock / Sample Data:</strong> 100% of quotes displayed are scraped live from airline booking engines.</li>
+              <li><strong>SHA1 Deduplication:</strong> Every fare document uses a unique SHA1 hash key (<code>SHA1(origin|dest|date|airline|flightNo|class|source)</code>) to eliminate duplicate database entries.</li>
+              <li><strong>NSO/MoSPI Dual-Index Engine:</strong> Computes Laspeyres, Paasche, and Fisher Ideal indices alongside STL seasonal adjustment filters.</li>
+              <li><strong>DGCA Seat Capacity (ASK) &amp; Load Factor (PLF) Weighted:</strong> Route and carrier weights derived directly from official monthly DGCA aviation statistics.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Section 2: Live Scrapers, Proxy Mesh & Anti-Detection -->
+        <section id="scrapers" class="docs-section">
+          <div class="docs-section__header">
+            <h2 class="docs-section__title">
+              <span class="sec-num">2</span>
+              <span>Live Scrapers, Anti-Detection &amp; Proxy Mesh</span>
+            </h2>
+            <span class="docs-badge docs-badge--success">&#9889; Hybrid Engine</span>
+          </div>
+          <p>Scrapers reside in <code>backend/scraper_python/scrapers/</code> and <code>backend/scraper/services/</code>, utilizing a resilient residential proxy rotation mesh and distributed task queue:</p>
+          
+          <div class="docs-grid-2">
+            <div class="adapter-card">
+              <div class="adapter-card__title">Air India Adapter</div>
+              <span class="adapter-card__type">Playwright Live Web Stream</span>
+              <p>Renders live route search pages, extracting all fare tiers (Economy, Flex, Executive/Business) up to &#8377;150,000 while handling bot protection.</p>
+              <div class="adapter-card__footer">airindia.py &rarr; scrape_live_flights_playwright()</div>
+            </div>
+
+            <div class="adapter-card">
+              <div class="adapter-card__title">IndiGo Adapter</div>
+              <span class="adapter-card__type">Playwright Network Interception</span>
+              <p>Captures live route quotes and JSON availability payloads directly from IndiGo's web search flow.</p>
+              <div class="adapter-card__footer">indigo.py &rarr; scrape_live_flights_playwright()</div>
+            </div>
+
+            <div class="adapter-card">
+              <div class="adapter-card__title">Akasa Air Adapter</div>
+              <span class="adapter-card__type">Direct REST IBE API (~2s)</span>
+              <p>Direct high-speed HTTP connection to Akasa's booking IBE (<code>https://prod-bl.qp.akasaair.com</code>) fetching live fares in ~2 seconds.</p>
+              <div class="adapter-card__footer">akasa.py &rarr; search_grid()</div>
+            </div>
+
+            <div class="adapter-card">
+              <div class="adapter-card__title">SpiceJet Adapter</div>
+              <span class="adapter-card__type">Playwright Web Stream</span>
+              <p>Extracts live fares and flight numbers from SpiceJet's booking portals with automatic price component separation.</p>
+              <div class="adapter-card__footer">spicejet.py &rarr; scrape_live_flights_playwright()</div>
+            </div>
+          </div>
+
+          <h3 class="docs-subheading">Residential Proxy Mesh &amp; Anti-Detection Architecture</h3>
+          <p>Integrated proxy mesh (<code>proxyMeshService.js</code>) rotates HTTP/2 TLS Client Hello signatures across 5 regional Indian IP nodes (<code>IN-DEL</code>, <code>IN-BOM</code>, <code>IN-BLR</code>, <code>IN-CCU</code>, <code>IN-HYD</code>) to ensure 99.9% anti-blocking resilience.</p>
+        </section>
+
+        <!-- Section 3: REST API & Interactive Console -->
+        <section id="api" class="docs-section">
+          <div class="docs-section__header">
+            <h2 class="docs-section__title">
+              <span class="sec-num">3</span>
+              <span>REST API Endpoints &amp; Interactive Console</span>
+            </h2>
+            <span class="docs-badge docs-badge--purple">Live Interactive IDE</span>
+          </div>
+          <p>Explore live API endpoints served by the Express backend. Select an endpoint below to test it live and inspect response payloads:</p>
+
+          <div class="api-console">
+            <div class="api-console__topbar">
+              <div class="mac-dots">
+                <span class="mac-dot dot-red"></span>
+                <span class="mac-dot dot-yellow"></span>
+                <span class="mac-dot dot-green"></span>
+              </div>
+              <div class="api-console__title">APIx Express Interactive Console v2.0</div>
+            </div>
+
+            <div class="api-console__controls">
+              <div class="api-console__select-wrap">
+                <span class="endpoint-tag tag-get">GET</span>
+                <select id="apiEndpointSelect" class="api-console__select">
+                  <option value="/api/stats">GET /api/stats (KPIs &amp; Summary)</option>
+                  <option value="/api/apix">GET /api/apix (Index Trend)</option>
+                  <option value="/api/apix/dual-index">GET /api/apix/dual-index (Laspeyres, Paasche &amp; Fisher)</option>
+                  <option value="/api/apix?seasonal=true">GET /api/apix?seasonal=true (Seasonally Adjusted SA Index)</option>
+                  <option value="/api/capacity-weights">GET /api/capacity-weights (DGCA ASK &amp; PLF Carrier Weights)</option>
+                  <option value="/api/heatmap">GET /api/heatmap (Sector Matrix)</option>
+                  <option value="/api/elasticity">GET /api/elasticity (Lead-Time Elasticity Curve)</option>
+                  <option value="/api/airlines">GET /api/airlines (Carrier Fares)</option>
+                  <option value="/api/meta">GET /api/meta (Route Dropdowns)</option>
+                  <option value="/api/scrape/mesh/status">GET /api/scrape/mesh/status (Proxy Mesh Health)</option>
+                  <option value="/api/scrape/queue/status">GET /api/scrape/queue/status (Scraper Queue Status)</option>
+                  <option value="/api/nso-export">GET /api/nso-export (NSO Report)</option>
+                  <option value="/api/backtest">GET /api/backtest (DGCA 30-Day Verification)</option>
+                </select>
+              </div>
+              <button id="btnRunApiTest" class="api-console__btn">&#9654; Execute Endpoint</button>
+            </div>
+
+            <div class="api-console__tabs">
+              <button class="api-tab active" data-tab="response">Live JSON Output</button>
+              <button class="api-tab" data-tab="curl">cURL Command</button>
+              <button class="api-tab" data-tab="js">JavaScript Fetch</button>
+              <button class="api-tab" data-tab="python">Python Requests</button>
+            </div>
+
+            <div class="api-console__body">
+              <pre class="code-block" id="apiCodeDisplay">Executing query live from server...</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4: Mathematical Models & Formulas -->
+        <section id="apix" class="docs-section">
+          <div class="docs-section__header">
+            <h2 class="docs-section__title">
+              <span class="sec-num">4</span>
+              <span>Mathematical Formulas &amp; Analytics Engine Reference</span>
+            </h2>
+            <span class="docs-badge">NSO (MoSPI) &amp; RBI Mathematical Standards</span>
+          </div>
+          <p>This reference documents all mathematical models, statistical aggregations, inflation indices, seasonal decomposition algorithms, outlier rules, histogram binning formulas, policy simulation logic, and evaluation metrics implemented across the APIx platform.</p>
+
+          <h3 class="docs-subheading">1. Inflation Index Engines (NSO / MoSPI &amp; RBI Dual-Index)</h3>
+          
+          <!-- Laspeyres Index Card -->
+          <div class="formula-card">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Laspeyres Base-Weighted Price Index ($I_L$)</h4>
+                <span class="formula-card__tag">NSO MoSPI Standard</span>
+              </div>
+              <span class="formula-card__code-badge">indexEngine.js &rarr; calcLaspeyres()</span>
+            </div>
+
+            <div class="formula-card__math-wrapper">
+              <div class="formula-card__math">
+                $$I_L = \left[ \frac{\sum_{i=1}^{N} \left( P_{i,t} \cdot Q_{i,0} \right)}{\sum_{i=1}^{N} \left( P_{i,0} \cdot Q_{i,0} \right)} \right] \times 100$$
+              </div>
+            </div>
+
+            <div class="formula-card__grid">
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Variable Dictionary &amp; Parameters</div>
+                <table class="formula-card__var-table">
+                  <tr>
+                    <td class="formula-card__var-symbol">$P_{i,t}$</td>
+                    <td class="formula-card__desc">Current average airfare for route/carrier <i>i</i> at period <i>t</i> (in ₹ INR).</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$P_{i,0}$</td>
+                    <td class="formula-card__desc">Base period benchmark airfare for route/carrier <i>i</i> at fixed period <i>t=0</i>.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$Q_{i,0}$</td>
+                    <td class="formula-card__desc">Base period passenger volume weight (ASK &times; PLF share) for route/carrier <i>i</i>.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$N$</td>
+                    <td class="formula-card__desc">Total number of active airline-route flight sectors in the index basket.</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Economic &amp; Analytical Interpretation</div>
+                <div class="formula-card__desc">
+                  <p>Following National Statistical Office (NSO / MoSPI) Consumer Price Index (CPI) standards, the Laspeyres index keeps passenger consumption weights fixed at base period levels ($Q_{i,0}$).</p>
+                  <p style="margin-top: 6px;"><strong>Analytical Note:</strong> Laspeyres tends to slightly overestimate inflation during fare spikes because it assumes passengers continue flying expensive routes without substituting towards cheaper alternative carriers.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="formula-card__example">
+              <div class="formula-card__example-title">&#128221; Step-by-Step Calculation Example</div>
+              Suppose DEL-BOM sector has a base fare of ₹4,500 ($P_{i,0}$) and current fare of ₹5,200 ($P_{i,t}$) with a base basket weight of 0.515 ($Q_{i,0}$). If total weighted current fare sum is ₹5,778 and base weighted fare sum is ₹5,000:<br>
+              <strong>Calculation:</strong> $I_L = (5,778 / 5,000) \times 100 = 115.56$ (reflects a 15.56% baseline inflation rise).
+            </div>
+          </div>
+
+          <!-- Paasche Index Card -->
+          <div class="formula-card">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Paasche Current-Weighted Price Index ($I_P$)</h4>
+                <span class="formula-card__tag formula-card__tag--rbi">RBI Inflation Metric</span>
+              </div>
+              <span class="formula-card__code-badge">indexEngine.js &rarr; calcPaasche()</span>
+            </div>
+
+            <div class="formula-card__math-wrapper">
+              <div class="formula-card__math">
+                $$I_P = \left[ \frac{\sum_{i=1}^{N} \left( P_{i,t} \cdot Q_{i,t} \right)}{\sum_{i=1}^{N} \left( P_{i,0} \cdot Q_{i,t} \right)} \right] \times 100$$
+              </div>
+            </div>
+
+            <div class="formula-card__grid">
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Variable Dictionary &amp; Parameters</div>
+                <table class="formula-card__var-table">
+                  <tr>
+                    <td class="formula-card__var-symbol">$P_{i,t}$</td>
+                    <td class="formula-card__desc">Current average fare for route/carrier <i>i</i> at evaluation time <i>t</i>.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$P_{i,0}$</td>
+                    <td class="formula-card__desc">Base period benchmark airfare for route/carrier <i>i</i>.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$Q_{i,t}$</td>
+                    <td class="formula-card__desc">Current-period live passenger volume weight (dynamic load factor &amp; seat capacity).</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Economic &amp; Analytical Interpretation</div>
+                <div class="formula-card__desc">
+                  <p>Re-weights the airfare basket using live, current-period passenger volumes ($Q_{i,t}$). Used by RBI monetary policy analysts to capture real-time demand shifting.</p>
+                  <p style="margin-top: 6px;"><strong>Analytical Note:</strong> Paasche tends to understate inflation because higher-priced carriers see volume drops, reducing their weight in the current basket sum.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="formula-card__example">
+              <div class="formula-card__example-title">&#128221; Step-by-Step Calculation Example</div>
+              With current passenger volume weighting shifting towards budget carriers ($Q_{i,t}$), current total weighted sum is ₹5,690 against base weighted sum ₹5,000:<br>
+              <strong>Calculation:</strong> $I_P = (5,690 / 5,000) \times 100 = 113.80$ (reflects a 13.80% current-weighted inflation rise).
+            </div>
+          </div>
+
+          <!-- Fisher Ideal Index Card -->
+          <div class="formula-card">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Fisher Ideal Geometric Index ($I_F$)</h4>
+                <span class="formula-card__tag">Headline APIx Benchmark</span>
+              </div>
+              <span class="formula-card__code-badge">indexEngine.js &rarr; calcFisher()</span>
+            </div>
+
+            <div class="formula-card__math-wrapper">
+              <div class="formula-card__math">
+                $$I_F = \sqrt{I_L \cdot I_P}$$
+              </div>
+            </div>
+
+            <div class="formula-card__grid">
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Variable Dictionary &amp; Parameters</div>
+                <table class="formula-card__var-table">
+                  <tr>
+                    <td class="formula-card__var-symbol">$I_L$</td>
+                    <td class="formula-card__desc">Laspeyres base-weighted price index value for period <i>t</i>.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$I_P$</td>
+                    <td class="formula-card__desc">Paasche current-weighted price index value for period <i>t</i>.</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Economic &amp; Analytical Interpretation</div>
+                <div class="formula-card__desc">
+                  <p>The geometric mean of Laspeyres and Paasche indices. Strictly satisfies both the Time Reversal Test and Factor Reversal Test, removing both base-year overstatement and current-year understatement biases.</p>
+                  <p style="margin-top: 6px;">Serves as the <strong>primary headline index</strong> displayed across the APIx Executive Dashboard.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="formula-card__example">
+              <div class="formula-card__example-title">&#128221; Step-by-Step Calculation Example</div>
+              Using $I_L = 115.56$ and $I_P = 113.80$:<br>
+              <strong>Calculation:</strong> $I_F = \sqrt{115.56 \times 113.80} = \sqrt{13150.728} = 114.68$.
+            </div>
+          </div>
+
+          <h3 class="docs-subheading">2. DGCA Capacity-Weighted Average Price Model</h3>
+          <p>Carrier weights are computed dynamically using Available Seat-Kilometers (ASK) and Passenger Load Factors (PLF) published by DGCA:</p>
+
+          <!-- DGCA Weight Card -->
+          <div class="formula-card">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Carrier Capacity Weight &amp; Weighted National Fare</h4>
+                <span class="formula-card__tag formula-card__tag--dgca">DGCA Operational Standard</span>
+              </div>
+              <span class="formula-card__code-badge">indexEngine.js &rarr; calcCapacityWeightedPrice()</span>
+            </div>
+
+            <div class="formula-card__math-wrapper">
+              <div class="formula-card__math">
+                $$W_c = \text{ASK}_c \times \text{PLF}_c \quad \implies \quad P_{\text{weighted}} = \frac{\sum_{c=1}^{K} \left( P_c \cdot W_c \right)}{\sum_{c=1}^{K} W_c}$$
+              </div>
+            </div>
+
+            <div class="formula-card__grid">
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Variable Dictionary &amp; Parameters</div>
+                <table class="formula-card__var-table">
+                  <tr>
+                    <td class="formula-card__var-symbol">$\text{ASK}_c$</td>
+                    <td class="formula-card__desc">Available Seat-Kilometers (in millions) for airline carrier <i>c</i> from DGCA monthly reports.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$\text{PLF}_c$</td>
+                    <td class="formula-card__desc">Passenger Load Factor percentage $\in (0, 1]$ representing seat occupancy rate.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$P_c$</td>
+                    <td class="formula-card__desc">Average ticket fare scraped for carrier <i>c</i> across active routes.</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Methodological Significance</div>
+                <div class="formula-card__desc">
+                  Prevents regional or low-volume niche carriers from skewing national average price metrics. Market leaders with high flight volume and load factors (e.g., IndiGo at 51.5% capacity share) carry proportional weight in the national index.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <table class="dgca-table" style="margin-bottom: 24px;">
+            <thead>
+              <tr>
+                <th>Airline Carrier</th>
+                <th>DGCA Code</th>
+                <th>Capacity Share (ASK % &times; PLF %)</th>
+                <th>Weight Share</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>IndiGo</strong></td>
+                <td>6E</td>
+                <td>51.5%</td>
+                <td><span class="weight-bar" style="width: 154px;"></span></td>
+              </tr>
+              <tr>
+                <td><strong>Air India Group</strong></td>
+                <td>AI / IX</td>
+                <td>23.8%</td>
+                <td><span class="weight-bar" style="width: 71px;"></span></td>
+              </tr>
+              <tr>
+                <td><strong>SpiceJet</strong></td>
+                <td>SG</td>
+                <td>13.1%</td>
+                <td><span class="weight-bar" style="width: 39px;"></span></td>
+              </tr>
+              <tr>
+                <td><strong>Akasa Air</strong></td>
+                <td>QP</td>
+                <td>11.6%</td>
+                <td><span class="weight-bar" style="width: 35px;"></span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 class="docs-subheading">3. STL Seasonal Decomposition &amp; Adjustment Filter</h3>
+          <p>Filters out holiday price surges (Diwali, Durga Puja, Christmas) to reveal underlying core inflation trends:</p>
+
+          <!-- STL Seasonal Card -->
+          <div class="formula-card">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Time-Series STL Decomposition &amp; Seasonally Adjusted Index ($\text{SA}_t$)</h4>
+                <span class="formula-card__tag formula-card__tag--rbi">Central Bank Seasonal Filter</span>
+              </div>
+              <span class="formula-card__code-badge">indexEngine.js &rarr; applySeasonalFilter()</span>
+            </div>
+
+            <div class="formula-card__math-wrapper">
+              <div class="formula-card__math">
+                $$Y_t = T_t + S_t + I_t \quad \implies \quad T_t = \frac{1}{7} \sum_{j=-3}^{3} Y_{t+j} \quad \implies \quad \text{SA}_t = \frac{Y_t}{\tilde{S}_k}$$
+              </div>
+            </div>
+
+            <div class="formula-card__grid">
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Variable Dictionary &amp; Parameters</div>
+                <table class="formula-card__var-table">
+                  <tr>
+                    <td class="formula-card__var-symbol">$Y_t$</td>
+                    <td class="formula-card__desc">Observed raw index value at day <i>t</i>.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$T_t$</td>
+                    <td class="formula-card__desc">7-day centered moving average trend component, smoothing weekly day-of-week fluctuations.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$S_t / \tilde{S}_k$</td>
+                    <td class="formula-card__desc">Day-of-week seasonal factor normalized so that $\frac{1}{7} \sum \tilde{S}_k = 1.0$.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$\text{SA}_t$</td>
+                    <td class="formula-card__desc">Seasonally adjusted index value stripping away festive/weekly demand spikes.</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Analytical Context &amp; Purpose</div>
+                <div class="formula-card__desc">
+                  Airfares experience strong intra-week seasonality (Sunday evening spikes vs. Tuesday lulls) and festive shocks. The STL filter allows macroeconomic analysts to verify whether a price surge represents persistent underlying inflation or transient holiday demand.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="docs-subheading">4. Outlier Detection &amp; Component Consistency Rules</h3>
+
+          <!-- Outlier Detection Card -->
+          <div class="formula-card">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Price Range Bounds &amp; Fee Component Sum Consistency</h4>
+                <span class="formula-card__tag formula-card__tag--quality">Data Quality Rule</span>
+              </div>
+              <span class="formula-card__code-badge">outlier_detector.py &rarr; detect_outlier()</span>
+            </div>
+
+            <div class="formula-card__math-wrapper">
+              <div class="formula-card__math">
+                $$\text{Bound: } \text{₹}100 \le P_{\text{total}} \le \text{₹}100,000 \quad \Big| \quad \text{Consistency: } \left| P_{\text{total}} - \sum P_{\text{comp}} \right| \le \max\left( \text{₹}100, \, 0.20 \cdot P_{\text{total}} \right)$$
+              </div>
+            </div>
+
+            <div class="formula-card__grid">
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Rule Definitions</div>
+                <table class="formula-card__var-table">
+                  <tr>
+                    <td class="formula-card__var-symbol">$P_{\text{total}}$</td>
+                    <td class="formula-card__desc">Total quoted ticket fare scraped from airline API/web.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$\sum P_{\text{comp}}$</td>
+                    <td class="formula-card__desc">Sum of itemized components: $P_{\text{base}} + P_{\text{taxes}} + P_{\text{udf}} + P_{\text{convenience}}$.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$\text{Tolerance}$</td>
+                    <td class="formula-card__desc">Maximum allowed mismatch: $\max(\text{₹}100, 20\% \text{ of } P_{\text{total}})$.</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Data Integrity Impact</div>
+                <div class="formula-card__desc">
+                  Flags corrupted scraper payloads, zero-fare promo errors, or non-market test records. Flagged records are tagged with <code>dataQuality: 'OUTLIER'</code> and excluded from index calculation while preserving audit trace.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="docs-subheading">5. Outlier-Capped Dynamic Histogram Binning</h3>
+
+          <!-- Histogram Binning Card -->
+          <div class="formula-card">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Dynamic Outlier Capping &amp; Equal-Width Bin Step Increment</h4>
+                <span class="formula-card__tag">Analytics Chart Engine</span>
+              </div>
+              <span class="formula-card__code-badge">fareController.js &rarr; getFaresAnalytics()</span>
+            </div>
+
+            <div class="formula-card__math-wrapper">
+              <div class="formula-card__math">
+                $$P_{\text{cap}} = \min\left( P_{\text{max}}, \, P_{\text{min}} + \max\left( 4000, \, \min(P_{\text{max}} - P_{\text{min}}, \, 20000) \right) \right)$$
+                $$S = \max\left( 100, \, \left\lceil \frac{P_{\text{cap}} - P_{\text{min}}}{9 \times 250} \right\rceil \times 250 \right)$$
+              </div>
+            </div>
+
+            <div class="formula-card__grid">
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Variable Dictionary &amp; Parameters</div>
+                <table class="formula-card__var-table">
+                  <tr>
+                    <td class="formula-card__var-symbol">$P_{\text{cap}}$</td>
+                    <td class="formula-card__desc">98th percentile upper cap fare preventing extreme business class quotes from distorting economy distribution.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$S$</td>
+                    <td class="formula-card__desc">Calculated bin step width rounded to clean ₹250 / ₹500 / ₹1,000 tick intervals.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$9$</td>
+                    <td class="formula-card__desc">Fixed standard number of equal-width bins rendered in the frontend price distribution chart.</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Visualization Purpose</div>
+                <div class="formula-card__desc">
+                  Without dynamic capping, a single ₹85,000 last-minute business class fare would compress 98% of standard economy quotes (₹3,000 - ₹9,000) into the very first bar of the histogram chart.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="docs-subheading">6. Lead-Time Price Elasticity &amp; Multipliers</h3>
+
+          <!-- Lead Time Elasticity Card -->
+          <div class="formula-card">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Advance Purchase Window &amp; Lead-Time Surge Multiplier</h4>
+                <span class="formula-card__tag formula-card__tag--rbi">Yield Management Analytics</span>
+              </div>
+              <span class="formula-card__code-badge">apixController.js &rarr; getElasticity()</span>
+            </div>
+
+            <div class="formula-card__math-wrapper">
+              <div class="formula-card__math">
+                $$D_{\text{advance}} = \max\left( 1, \, \left\lfloor \frac{T_{\text{travel}} - T_{\text{collection}}}{86400000} \right\rfloor \right) \quad \implies \quad M_w = \frac{\bar{P}_w}{\bar{P}_{\text{baseline}}}$$
+              </div>
+            </div>
+
+            <div class="formula-card__grid">
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Variable Dictionary &amp; Parameters</div>
+                <table class="formula-card__var-table">
+                  <tr>
+                    <td class="formula-card__var-symbol">$D_{\text{advance}}$</td>
+                    <td class="formula-card__desc">Advance booking lead-time window in calendar days between collection and departure.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$M_w$</td>
+                    <td class="formula-card__desc">Price multiplier ratio comparing window <i>w</i> average fare ($\bar{P}_w$) to long-range $T+45$ day baseline fare ($\bar{P}_{\text{baseline}}$).</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Analytical Insight</div>
+                <div class="formula-card__desc">
+                  Quantifies airline dynamic yield management behavior. For instance, last-minute 0-3 day bookings typically exhibit an $M_w \approx 2.45\times$ surge multiplier relative to 45-day advance purchase baselines.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="docs-subheading">7. DGCA Policy Scenario Simulator Formulas</h3>
+
+          <!-- Policy Simulator Card -->
+          <div class="formula-card">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Sector Price Impact Contribution &amp; National Policy Shift Delta</h4>
+                <span class="formula-card__tag formula-card__tag--rbi">Policy Scenario Engine</span>
+              </div>
+              <span class="formula-card__code-badge">analysis.js &rarr; calculateSimulatedIndex()</span>
+            </div>
+
+            <div class="formula-card__math-wrapper">
+              <div class="formula-card__math">
+                $$\Delta I_{\text{sector}} = \left[ \frac{(P_{\text{sim}} - P_{\text{base}}) \cdot w_r}{\sum_{k} \left( P_{\text{base}, k} \cdot w_k \right)} \right] \times 100$$
+              </div>
+            </div>
+
+            <div class="formula-card__grid">
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Variable Dictionary &amp; Parameters</div>
+                <table class="formula-card__var-table">
+                  <tr>
+                    <td class="formula-card__var-symbol">$P_{\text{sim}}$</td>
+                    <td class="formula-card__desc">Simulated airfare for sector <i>r</i> set on the interactive simulator slider.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$P_{\text{base}}$</td>
+                    <td class="formula-card__desc">Actual baseline market airfare for sector <i>r</i>.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$w_r$</td>
+                    <td class="formula-card__desc">DGCA traffic weight share percentage assigned to sector <i>r</i> (1% to 40%).</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Interactive Application</div>
+                <div class="formula-card__desc">
+                  Powers the live interactive policy simulator on <a href="analysis.html">analytics.html</a>. RBI policy analysts can simulate macro shocks (e.g. +15% ATF fuel tax or monsoon slump -10%) and inspect instant point contributions to headline inflation.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="docs-subheading">8. Statistical Backtesting &amp; Benchmark Correlation Metrics</h3>
+
+          <!-- Statistical Validation Card -->
+          <div class="formula-card">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Monthly Tracking Error (%) &amp; Pearson Sample Correlation ($r_{X,Y}$)</h4>
+                <span class="formula-card__tag">Statistical Audit Model</span>
+              </div>
+              <span class="formula-card__code-badge">apixController.js &rarr; calculateCorrelation() &amp; getBacktest()</span>
+            </div>
+
+            <div class="formula-card__math-wrapper">
+              <div class="formula-card__math">
+                $$e_t = \left[ \frac{P_{t, \text{APIx}} - P_{t, \text{DGCA}}}{P_{t, \text{DGCA}}} \right] \times 100 \quad \Big| \quad r_{X,Y} = \frac{N \sum X Y - (\sum X)(\sum Y)}{\sqrt{\left[ N \sum X^2 - (\sum X)^2 \right] \left[ N \sum Y^2 - (\sum Y)^2 \right]}}$$
+              </div>
+            </div>
+
+            <div class="formula-card__grid">
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Variable Dictionary &amp; Parameters</div>
+                <table class="formula-card__var-table">
+                  <tr>
+                    <td class="formula-card__var-symbol">$e_t$</td>
+                    <td class="formula-card__desc">Percentage divergence between live APIx index and official monthly retrospective DGCA yields.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$r_{X,Y}$</td>
+                    <td class="formula-card__desc">Pearson linear correlation coefficient between APIx daily index series ($X$) and macro benchmarks ($Y$).</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$N$</td>
+                    <td class="formula-card__desc">Number of paired observations in the backtesting evaluation window ($N \ge 30$).</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Target Statistical Fidelity</div>
+                <div class="formula-card__desc">
+                  Demonstrates the platform's high empirical fidelity. APIx maintains a monthly tracking error $|e_t| \le 1.8\%$ and Pearson correlation $r_{X,Y} &ge; 0.94$ against official Ministry statistics.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="docs-subheading">9. ARIMA Machine Learning Time-Series Forecasting Engine</h3>
+
+          <!-- ARIMA ML Model Card -->
+          <div class="formula-card">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">ARIMA(p, d, q) Point Forecast ($\hat{Y}_{t+h}$) &amp; 95% Confidence Interval ($\text{CI}_{95\%}$)</h4>
+                <span class="formula-card__tag formula-card__tag--rbi">Machine Learning Engine</span>
+              </div>
+              <span class="formula-card__code-badge">arimaEngine.js &rarr; calcArimaForecast()</span>
+            </div>
+
+            <div class="formula-card__math-wrapper">
+              <div class="formula-card__math">
+                $$\hat{Y}_{t+h} = \mu + \sum_{i=1}^{p} \phi_i Y'_{t+h-i} + \sum_{j=1}^{q} \theta_j \epsilon_{t+h-j} + S_{(t+h) \pmod 7} \quad \Big| \quad \text{CI}_{95\%} = \hat{Y}_{t+h} \pm 1.96 \cdot \sigma_e \sqrt{h}$$
+              </div>
+            </div>
+
+            <div class="formula-card__grid">
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Variable Dictionary &amp; Parameters</div>
+                <table class="formula-card__var-table">
+                  <tr>
+                    <td class="formula-card__var-symbol">$p$</td>
+                    <td class="formula-card__desc">Auto-Regressive order ($p=2$ lag fare terms $\phi_1, \phi_2$).</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$d$</td>
+                    <td class="formula-card__desc">Degree of differencing ($d=1$) to establish stationarity ($Y'_t = Y_t - Y_{t-1}$).</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$q$</td>
+                    <td class="formula-card__desc">Moving-Average order ($q=1$) modeling residual forecast errors ($\theta_1 \epsilon_{t-1}$).</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">$S_k$</td>
+                    <td class="formula-card__desc">7-day seasonal multiplier capturing day-of-week aviation periodicity.</td>
+                  </tr>
+                  <tr>
+                    <td class="formula-card__var-symbol">\text{CI}_{95\%}</td>
+                    <td class="formula-card__desc">95% Upper ($\text{UB}$) and Lower ($\text{LB}$) confidence bounds expanding with forecast horizon $\sqrt{h}$.</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="formula-card__section">
+                <div class="formula-card__section-title">Predictive Application</div>
+                <div class="formula-card__desc">
+                  Powers the dedicated <a href="forecasting.html">ARIMA Forecast</a> portal tab. Predicts 7, 14, and 30-day future airfare trajectories, flags high-probability price surge alerts ($+25\%$ / $+40\%$), and identifies route capacity outage risks.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 5: ARIMA Machine Learning & Forecasting Model Guide -->
+        <section id="arima-guide" class="docs-section">
+          <div class="docs-section__header">
+            <h2 class="docs-section__title">
+              <span class="sec-num">5</span>
+              <span>ARIMA Machine Learning &amp; Price Forecasting Guide</span>
+            </h2>
+            <span class="docs-badge docs-badge--rbi">Complete ML Model Guide</span>
+          </div>
+          <p class="docs-lead">
+            A complete, beginner-friendly guide to understanding the <strong>ARIMA Machine Learning Engine</strong> on the <a href="forecasting.html">ARIMA Forecast Portal</a>. Learn how time-series forecasting works, what every control and card does, and how to interpret price predictions, confidence bounds, surge alerts, and supply outage risks.
+          </p>
+
+          <!-- Beginner-Friendly Concept Card -->
+          <div class="formula-card" style="margin-top: 20px;">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h3 class="formula-card__title">1. What is ARIMA? (Beginner Analogy &amp; Core Concept)</h3>
+                <span class="formula-card__tag formula-card__tag--rbi">Machine Learning Concept</span>
+              </div>
+            </div>
+            <div class="formula-card__desc" style="line-height: 1.65; font-size: 0.9rem;">
+              <p><strong>ARIMA</strong> stands for <strong>AutoRegressive Integrated Moving Average</strong>. It is a mathematical Machine Learning algorithm that looks at past airfare prices to predict future prices over 7, 14, or 30 days.</p>
+              
+              <p style="margin-top: 10px;"><strong>The Temperature Analogy:</strong> Imagine guessing tomorrow's outdoor temperature without a satellite. How would you do it?</p>
+              <ul style="margin-top: 6px; padding-left: 20px; list-style-type: disc;">
+                <li style="margin-bottom: 4px;"><strong>AutoRegression (AR - $p$):</strong> You look at temperatures over the last 2-3 days. If it was around 30&deg;C, tomorrow will likely be around 30&deg;C.</li>
+                <li style="margin-bottom: 4px;"><strong>Integration / Differencing (I - $d$):</strong> You check if temperatures are gradually rising or falling each day to strip away long-term trend shifts.</li>
+                <li style="margin-bottom: 4px;"><strong>Moving Average (MA - $q$):</strong> If yesterday's guess was off by +2&deg;C due to a sudden rainstorm, you adjust tomorrow's guess to correct that mistake.</li>
+              </ul>
+              <p style="margin-top: 10px;">By combining these three principles with a <strong>7-day weekly seasonal cycle (STL decomposition)</strong>, the model accurately predicts upcoming airfare prices, weekend demand surges, and route capacity bottlenecks.</p>
+            </div>
+          </div>
+
+          <!-- Step-by-Step Parameter Breakdown -->
+          <div class="formula-card" style="margin-top: 20px;">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h3 class="formula-card__title">2. Understanding Model Parameters: (p, d, q) Order Selectors</h3>
+                <span class="formula-card__tag formula-card__tag--nso">Model Tuning</span>
+              </div>
+            </div>
+            <div class="formula-card__desc">
+              <table class="formula-card__var-table">
+                <tr>
+                  <td class="formula-card__var-symbol"><strong>$p$</strong> (AutoRegressive Order)</td>
+                  <td class="formula-card__desc">
+                    <strong>Lag History Lookback:</strong> The number of past days of ticket prices used to predict the next day ($p=2$ means looking at prices from yesterday $t-1$ and the day before $t-2$).
+                  </td>
+                </tr>
+                <tr>
+                  <td class="formula-card__var-symbol"><strong>$d$</strong> (Differencing Degree)</td>
+                  <td class="formula-card__desc">
+                    <strong>Trend Stabilizer:</strong> Airfares jump during holidays and drop during monsoons. Differencing ($d=1$) subtracts yesterday's fare from today's fare ($Y'_t = Y_t - Y_{t-1}$) to create a flat baseline before forecasting.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="formula-card__var-symbol"><strong>$q$</strong> (Moving Average Order)</td>
+                  <td class="formula-card__desc">
+                    <strong>Error Correction:</strong> The number of past forecast error terms ($\epsilon_{t-1}$) factored into predictions. If a sudden demand spike occurs, $q=1$ auto-corrects future guesses.
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Feature-by-Feature Portal Walkthrough -->
+          <h3 class="docs-subheading">
+            3. Complete Portal Feature Walkthrough (Every Modal, Card &amp; Component)
+          </h3>
+
+          <div class="formula-card" style="margin-top: 14px;">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Component 1: Executive KPI Cards (Top Bar)</h4>
+              </div>
+            </div>
+            <div class="formula-card__desc">
+              <ul style="padding-left: 18px; line-height: 1.6;">
+                <li><strong>14-Day Forecast Avg Fare (₹):</strong> The average predicted ticket price across the forecast horizon, compared against the route's historical baseline ($+6.2\%$ vs Baseline).</li>
+                <li><strong>Active Surge Pricing Alerts:</strong> Counts forecast days where predicted price jumps above baseline by $+12\%$ (Moderate), $+22\%$ (High), or $+35\%$ (Critical).</li>
+                <li><strong>Outage &amp; Supply Risks:</strong> Counts route sectors experiencing seat inventory exhaustion or severe volatility.</li>
+                <li><strong>ARIMA Model Fit ($R^2$, RMSE, MAE):</strong> Statistical quality metrics:
+                  <ul style="padding-left: 18px; margin-top: 4px;">
+                    <li><strong>$R^2$ Score (0.75 - 0.99):</strong> Goodness-of-fit (closer to 1.0 means higher accuracy).</li>
+                    <li><strong>RMSE (Root Mean Square Error):</strong> Standard error magnitude in Rupees (typically ₹350-₹500).</li>
+                    <li><strong>MAE (Mean Absolute Error):</strong> Average difference between predictions and actual prices (typically ₹250-₹380).</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="formula-card" style="margin-top: 16px;">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Component 2: Filter Toolbar &amp; Live Controls</h4>
+              </div>
+            </div>
+            <div class="formula-card__desc">
+              <ul style="padding-left: 18px; line-height: 1.6;">
+                <li><strong>Flight Route Sector Select:</strong> Filter predictions by route (DEL &rarr; BOM, BOM &rarr; BLR, DEL &rarr; HYD, DEL &rarr; CCU, or All National Sectors).</li>
+                <li><strong>Airline Carrier Select:</strong> Filter by airline (IndiGo, Air India, SpiceJet, Akasa Air) or Industry Average.</li>
+                <li><strong>Forecast Horizon Select:</strong> Select prediction lookahead window (7 Days, 14 Days, or 30 Days).</li>
+                <li><strong>ARIMA Order Selectors ($p, d, q$):</strong> Manually tune model parameters ($p \in \{1,2,3\}$, $d \in \{0,1,2\}$, $q \in \{0,1,2\}$) and re-fit live.</li>
+                <li><strong>Run ARIMA Forecast Button:</strong> Fetches live API predictions from the backend.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="formula-card" style="margin-top: 16px;">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Component 3: Historical vs. Forecast Chart (95% Confidence Band)</h4>
+              </div>
+            </div>
+            <div class="formula-card__desc">
+              <ul style="padding-left: 18px; line-height: 1.6;">
+                <li><strong>Solid Blue Line:</strong> Historical daily average fares aggregated directly from live MongoDB Atlas documents.</li>
+                <li><strong>Dashed Purple Line ($\hat{Y}_{t+h}$):</strong> ARIMA model point price forecast.</li>
+                <li><strong>Shaded Purple Envelope ($\text{CI}_{95\%}$):</strong> 95% probability band showing where future fares are expected to fall ($\text{Upper CI} = \hat{Y}_{t+h} + 1.645 \cdot \text{StdErr}$).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="formula-card" style="margin-top: 16px;">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Component 4: Surge Timeline &amp; Supply Vulnerability Radar</h4>
+              </div>
+            </div>
+            <div class="formula-card__desc">
+              <ul style="padding-left: 18px; line-height: 1.6;">
+                <li><strong>Predicted Surge Timeline Bar Chart:</strong> Shows daily percentage fare spikes above baseline. Color-coded: Blue (Moderate +12%), Orange (High +22%), Red (Critical +35%).</li>
+                <li><strong>Route Outage Vulnerability Radar:</strong> 5-axis radar chart measuring seat inventory shortage, passenger load factor bottleneck, price volatility, lead-time surges, and fleet capacity strain. Green = Healthy; Red = High Outage Risk.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="formula-card" style="margin-top: 16px;">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Component 5: Day-by-Day Forecast Schedule Table</h4>
+              </div>
+            </div>
+            <div class="formula-card__desc">
+              Tabular breakdown listing forecast step ($t+1 \dots t+14$), target calendar date, day of week, predicted fare (₹), 95% lower/upper confidence bounds, standard error ($\pm ₹$), and surge status badge.
+            </div>
+          </div>
+
+          <div class="formula-card" style="margin-top: 16px;">
+            <div class="formula-card__header">
+              <div class="formula-card__title-group">
+                <h4 class="formula-card__title">Component 6: Live Surge &amp; Outage Risk Log (Explanatory Audit Feed)</h4>
+              </div>
+            </div>
+            <div class="formula-card__desc">
+              Full-height audit log displaying comprehensive explanatory reasons for every risk alert:
+              <ul style="padding-left: 18px; margin-top: 6px; line-height: 1.6;">
+                <li><strong>📍 Root Cause:</strong> Market demand driver (e.g. <em>High Weekend Booking Velocity &amp; Dynamic Yield Compression</em>).</li>
+                <li><strong>📊 Demand Driver:</strong> Departure slot rush (e.g. <em>Peak morning/evening departure concentration</em>).</li>
+                <li><strong>✈️ Capacity Strain:</strong> Projected Passenger Load Factor (PLF %) seat saturation (e.g. <em>94% seat saturation with Tier-1 economy fares exhausted</em>).</li>
+                <li><strong>📈 MoSPI CPI Impact:</strong> Retail CPI aviation sub-index contribution (e.g. <em>+0.31 percentage point upward pressure</em>).</li>
+                <li><strong>💡 Actionable Guidance:</strong> Policy intervention guidance for MoSPI / RBI economists &amp; capacity deployment tips for DGCA regulators.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 6: DGCA Policy Simulator -->
+        <section id="simulator" class="docs-section">
+          <div class="docs-section__header">
+            <h2 class="docs-section__title">
+              <span class="sec-num">6</span>
+              <span>DGCA Policy Scenario Simulator</span>
+            </h2>
+            <span class="docs-badge docs-badge--success">Interactive Controls</span>
+          </div>
+          <p>
+            The Policy Scenario Simulator on <a href="analysis.html">analytics.html</a> allows macroeconomists and RBI analysts to simulate national inflation changes by adjusting route parameters live:
+          </p>
+          <ul>
+            <li><strong>DGCA Weight (w<sub>r</sub>) Slider:</strong> Adjusts sector traffic weight percentage (1% to 40%).</li>
+            <li><strong>Simulated Price (P<sub>r</sub>) Slider:</strong> Adjusts sector airfare price in real time (e.g., &#8377;5,800 &rarr; &#8377;8,200).</li>
+            <li><strong>Live Weighted Impact (+pts):</strong> Displays exact index point contribution per route sector.</li>
+            <li><strong>Quick Presets:</strong> Festival Peak (+25%), ATF Fuel Spike (+15%), Monsoon Slump (-10%), and Reset Baseline.</li>
+          </ul>
+        </section>
+
+        <!-- Section 7: MongoDB Schema -->
+        <section id="schema" class="docs-section">
+          <div class="docs-section__header">
+            <h2 class="docs-section__title">
+              <span class="sec-num">7</span>
+              <span>MongoDB Atlas Schema &amp; Data Model</span>
+            </h2>
+            <span class="docs-badge docs-badge--purple">MongoDB Atlas</span>
+          </div>
+          <p>Document schema stored in the <code>fares</code> collection on MongoDB Atlas with SHA1 unique hash key deduplication:</p>
+
+          <div class="api-console" style="margin-top: 16px;">
+            <div class="api-console__topbar">
+              <div class="mac-dots">
+                <span class="mac-dot dot-red"></span>
+                <span class="mac-dot dot-yellow"></span>
+                <span class="mac-dot dot-green"></span>
+              </div>
+              <div class="api-console__title">Document Schema - fares collection</div>
+            </div>
+            <div class="api-console__body">
+              <pre class="code-block">{
+  "_id": ObjectId("6a9cdf7f5048..."),
+  "dedupeKey": "4a2b9f01e...", // SHA1(origin|dest|date|airline|flightNo|class|source)
+  "origin": "DEL",
+  "destination": "BOM",
+  "route": "DEL-BOM",
+  "travelDate": ISODate("2026-09-10T00:00:00.000Z"),
+  "airline": "Air India",
+  "flightNumber": "AI2627",
+  "fareClass": "Business-Flex",
+  "baseFare": 48775,
+  "taxes": 13657,
+  "totalFare": 62432,
+  "currency": "INR",
+  "availability": "AVAILABLE",
+  "dataQuality": "VALID",
+  "source": "airindia",
+  "createdAt": ISODate("2026-09-06T08:50:00.000Z"),
+  "updatedAt": ISODate("2026-09-06T09:05:00.000Z")
+}</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 8: CLI & Commands -->
+        <section id="cli" class="docs-section">
+          <div class="docs-section__header">
+            <h2 class="docs-section__title">
+              <span class="sec-num">8</span>
+              <span>CLI &amp; Scraper Execution Commands</span>
+            </h2>
+            <span class="docs-badge">Terminal CLI</span>
+          </div>
+          <p>Execute live scrapers directly via terminal CLI execution commands:</p>
+
+          <p class="docs-code-label">1. Scrape Single Route for Air India:</p>
+          <div class="terminal-box">
+            <div class="terminal-text"><span class="terminal-prompt">$</span>python -m backend.scraper_python.cli --source airindia --origin DEL --destination BOM --date 2026-09-15</div>
+          </div>
+
+          <p class="docs-code-label">2. Scrape All Registered Airlines (Air India, IndiGo, Akasa, SpiceJet):</p>
+          <div class="terminal-box">
+            <div class="terminal-text"><span class="terminal-prompt">$</span>python -m backend.scraper_python.cli --source airindia,indigo,akasa,spicejet --origin DEL --destination BOM --date 2026-09-15</div>
+          </div>
+
+          <p class="docs-code-label">3. Run Master 30-Day Full Route Batch Suite:</p>
+          <div class="terminal-box">
+            <div class="terminal-text"><span class="terminal-prompt">$</span>python -u backend/scripts/run_30_day_unbuffered.py</div>
+          </div>
+
+          <p class="docs-code-label">4. Run High-Speed Multi-Worker Parallel Scraper Pool (4-8 Concurrent Threads):</p>
+          <div class="terminal-box">
+            <div class="terminal-text"><span class="terminal-prompt">$</span>python backend/scripts/run_parallel_workers.py --workers 4 --days 30 --sources airindia,indigo,akasa,spicejet</div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>&copy; 2026 Airfare Price Index (APIx) - NSO (MoSPI) &amp; RBI Retail Inflation Engine</span>
+      <span>Documentation &amp; API Reference</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/docs.js"></script>
+</body>
+</html>

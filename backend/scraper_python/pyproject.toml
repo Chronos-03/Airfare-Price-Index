@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scraping-python"
+version = "1.0.0"
+description = "Python port of the national flight fare scraper (JSON-first, no MongoDB)."
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.31",
+    "pypdf>=4.0",
+]
+
+[project.scripts]
+scraping = "scraping_python.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["scraping_python*"]
